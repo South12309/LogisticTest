@@ -7,4 +7,5 @@ public class TruckEntity {
     private String model;
     private String number;
     private List<DriverEntity> drivers;
+    private int parkingId;
 }

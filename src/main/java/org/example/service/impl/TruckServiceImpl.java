@@ -1,8 +1,6 @@
 package org.example.service.impl;
 
-import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
-import org.example.service.DriverService;
 import org.example.service.TruckService;
 
 import java.util.UUID;
