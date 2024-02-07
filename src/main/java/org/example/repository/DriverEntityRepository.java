@@ -4,6 +4,6 @@ import org.example.model.DriverEntity;
 
 import java.util.UUID;
 
-public interface DriverEntityRepository extends Repository<DriverEntity, UUID> {
+public interface DriverEntityRepository extends Repository<DriverEntity, Integer> {
 }
 

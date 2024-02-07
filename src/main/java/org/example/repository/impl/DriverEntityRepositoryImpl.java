@@ -1,6 +1,7 @@
 package org.example.repository.impl;
 
 import org.example.db.ConnectionManager;
+import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.repository.DriverEntityRepository;
 import org.example.repository.mapper.DriverResultSetMapper;
@@ -13,14 +14,14 @@ import java.util.UUID;
 
 public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     private DriverResultSetMapper resultSetMapper;
-    private ConnectionManager connectionManager;
+   // private ConnectionManager connectionManager;
 
     @Override
-    public DriverEntity findById(UUID id) {
+    public DriverEntity findById(Integer id) {
         // Здесь используем try with resources
-        try {
-            Connection connection = connectionManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("");
+        try (Connection connection = ConnectionManagerImpl.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM drivers where id=?");
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSetMapper.map(resultSet);
 
@@ -30,7 +31,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     }
 
     @Override
-    public boolean deleteById(UUID id) {
+    public boolean deleteById(Integer id) {
         return false;
     }
 
