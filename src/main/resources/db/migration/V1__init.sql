@@ -1,3 +1,11 @@
+--Таблица стоянок. Связь с таблицей грузовиков один-ко-многим
+create table parkings
+(
+    id              bigserial primary key,
+    address         varchar(255),
+    square          int
+);
+
 --Таблица водителей. Связь с таблицей грузовиков многое-ко-многим
 create table drivers
 (
@@ -20,13 +28,5 @@ create table trucks_drivers
     id              bigserial primary key,
     driver_id       bigint references drivers (id),
     truck_id        bigint references trucks (id)
-);
-
---Таблица стоянок. Связь с таблицей грузовиков один-ко-многим
-create table parkings
-(
-    id              bigserial primary key,
-    address         varchar(255),
-    square          int
 );
 
