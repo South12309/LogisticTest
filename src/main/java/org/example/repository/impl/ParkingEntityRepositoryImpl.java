@@ -78,7 +78,7 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
             PreparedStatement preparedStatement =
                     connection.prepareStatement(
-                            "UPDATE parkings SET address = ?, square = ? WHERE events_id = ?");
+                            "UPDATE parkings SET address = ?, square = ? WHERE id = ?");
             preparedStatement.setObject(1, parkingEntity.getAddress());
             preparedStatement.setObject(2,parkingEntity.getSquare());
             preparedStatement.setObject(3,parkingEntity.getId());

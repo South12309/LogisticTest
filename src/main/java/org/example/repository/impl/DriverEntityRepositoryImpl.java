@@ -76,7 +76,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
             PreparedStatement preparedStatement =
                     connection.prepareStatement(
-                            "UPDATE drivers SET fio = ? WHERE events_id = ?");
+                            "UPDATE drivers SET fio = ? WHERE id = ?");
             preparedStatement.setObject(1, driverEntity.getFio());
             preparedStatement.setObject(2,driverEntity.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
