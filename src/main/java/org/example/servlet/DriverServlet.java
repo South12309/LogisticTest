@@ -1,5 +1,6 @@
 package org.example.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import org.example.servlet.dto.DriverDto;
 import org.example.servlet.dto.TruckDto;
 import org.example.servlet.mapper.DriverDtoMapper;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -20,11 +22,12 @@ import java.util.UUID;
 public class DriverServlet extends HttpServlet {
     private DriverService service;
     private DriverDtoMapper dtomapper;
+    private final ObjectMapper jsonMapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
-        if (id==null) {
+        if (id == null) {
             List<DriverDto> result = dtomapper.entityToDto(service.findAll());
         } else {
             DriverDto result = dtomapper.entityToDto(service.findById(Integer.parseInt(id)));
@@ -35,10 +38,16 @@ public class DriverServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DriverEntity driverEntity = dtomapper.map(new DriverDto());
-        DriverEntity saved = service.save(driverEntity);
-        DriverDto map = dtomapper.map(saved);
-        // return our DTO, not necessary
+        StringBuilder requestBody = new StringBuilder();
+        BufferedReader reader = req.getReader();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            requestBody.append(line);
+        }
+        DriverDto driverDTO = jsonMapper.readValue(requestBody.toString(), DriverDto.class);
+        DriverDto saveDto = dtomapper.entityToDto(service.save(dtomapper.dtoToEntity(driverDTO)));
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.getWriter().write(jsonMapper.writeValueAsString(saveDto));
     }
 
     @Override
