@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 
-@WebServlet(name = "SimpleServlet", value = "/simple")
+@WebServlet(name = "TruckServlet", value = "/truck")
 public class TruckServlet extends HttpServlet {
     private TruckService service;
     private TruckDtoMapper dtomapper;

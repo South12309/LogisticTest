@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 
-@WebServlet(name = "SimpleServlet", value = "/simple")
+@WebServlet(name = "DriverServlet", value = "/driver")
 public class DriverServlet extends HttpServlet {
     private DriverService service;
     private DriverDtoMapper dtomapper;

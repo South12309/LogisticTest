@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 
 public class ParkingResultSetMapperImpl implements ParkingResultSetMapper {
     @Override
-    public ParkingEntity map(ResultSet resultSet) {
+    public ParkingEntity mapOneResult(ResultSet resultSet) {
         return null;
     }
 }

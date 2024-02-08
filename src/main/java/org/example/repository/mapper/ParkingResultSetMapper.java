@@ -4,7 +4,9 @@ import org.example.model.DriverEntity;
 import org.example.model.ParkingEntity;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 public interface ParkingResultSetMapper {
-    ParkingEntity map(ResultSet resultSet);
+    ParkingEntity mapOneResult(ResultSet resultSet);
+    List<ParkingEntity> mapListResult(ResultSet resultSet);
 }
