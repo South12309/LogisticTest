@@ -12,6 +12,7 @@ import org.example.servlet.dto.TruckDto;
 import org.example.servlet.mapper.DriverDtoMapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -22,17 +23,34 @@ public class DriverServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UUID uuid = UUID.randomUUID();// Our Id from request
-        DriverEntity byId = service.findById(uuid);
-        DriverDto outGoingDto = dtomapper.map(byId);
-        // return our DTO
+        String id = req.getParameter("id");
+        if (id==null) {
+            List<DriverDto> result = dtomapper.entityToDto(service.findAll());
+        } else {
+            DriverDto result = dtomapper.entityToDto(service.findById(Integer.parseInt(id)));
+        }
+        //TODO
+        // return our result in json
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DriverEntity simpleEntity = dtomapper.map(new DriverDto());
-        DriverEntity saved = service.save(simpleEntity);
+        DriverEntity driverEntity = dtomapper.map(new DriverDto());
+        DriverEntity saved = service.save(driverEntity);
         DriverDto map = dtomapper.map(saved);
         // return our DTO, not necessary
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        DriverEntity driverEntity = dtomapper.map(new DriverDto());
+        DriverEntity updated = service.update(driverEntity);
+        DriverDto map = dtomapper.map(updated);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        DriverEntity driverEntity = dtomapper.map(new DriverDto());
+        Boolean isDeleted = service.delete(driverEntity);
     }
 }

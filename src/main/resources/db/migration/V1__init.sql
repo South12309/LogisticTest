@@ -23,7 +23,7 @@ create table trucks
 );
 
 --Таблица связи водителей и грузовиков
-create table trucks_drivers
+create table drivers_trucks
 (
     id              bigserial primary key,
     driver_id       bigint references drivers (id),
