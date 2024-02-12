@@ -10,9 +10,7 @@ public interface DriverService {
 
     DriverEntity findById(Integer uuid);
 
-    DriverEntity update(DriverEntity driverEntity);
-
-    Boolean delete(DriverEntity driverEntity);
+    Boolean delete(Integer id);
 
     List<DriverEntity> findAll();
 }

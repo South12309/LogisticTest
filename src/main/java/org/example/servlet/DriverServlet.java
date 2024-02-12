@@ -29,11 +29,13 @@ public class DriverServlet extends HttpServlet {
         String id = req.getParameter("id");
         if (id == null) {
             List<DriverDto> result = dtomapper.entityToDto(service.findAll());
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write(jsonMapper.writeValueAsString(result));
         } else {
             DriverDto result = dtomapper.entityToDto(service.findById(Integer.parseInt(id)));
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write(jsonMapper.writeValueAsString(result));
         }
-        //TODO
-        // return our result in json
     }
 
     @Override
@@ -52,14 +54,25 @@ public class DriverServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DriverEntity driverEntity = dtomapper.map(new DriverDto());
-        DriverEntity updated = service.update(driverEntity);
-        DriverDto map = dtomapper.map(updated);
+        StringBuilder requestBody = new StringBuilder();
+        BufferedReader reader = req.getReader();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            requestBody.append(line);
+        }
+        DriverDto driverDTO = jsonMapper.readValue(requestBody.toString(), DriverDto.class);
+        DriverDto updatedDto = dtomapper.entityToDto(service.save(dtomapper.dtoToEntity(driverDTO)));
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.getWriter().write(jsonMapper.writeValueAsString(updatedDto));
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        DriverEntity driverEntity = dtomapper.map(new DriverDto());
-        Boolean isDeleted = service.delete(driverEntity);
+        Integer id = Integer.parseInt(req.getParameter("id"));
+        if (!service.delete(id)) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 }

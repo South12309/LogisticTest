@@ -16,18 +16,13 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public DriverEntity findById(UUID uuid) {
+    public DriverEntity findById(Integer uuid) {
         return null;
     }
 
     @Override
-    public DriverEntity update(DriverEntity driverEntity) {
-        return null;
-    }
-
-    @Override
-    public Boolean delete(DriverEntity driverEntity) {
-        return null;
+    public Boolean delete(Integer id) {
+        return false;
     }
 
     @Override
