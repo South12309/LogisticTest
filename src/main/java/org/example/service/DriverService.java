@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface DriverService {
     DriverEntity save(DriverEntity driverEntity);
 
-    DriverEntity findById(Integer uuid);
+    DriverEntity findById(Integer id);
 
     Boolean delete(Integer id);
 

@@ -11,22 +11,21 @@ public class DriverServiceImpl implements DriverService {
     private DriverEntityRepository repository;
     @Override
     public DriverEntity save(DriverEntity driverEntity) {
-        repository.save(driverEntity);
-        return null;
+        return repository.save(driverEntity);
     }
 
     @Override
-    public DriverEntity findById(Integer uuid) {
-        return null;
+    public DriverEntity findById(Integer id) {
+        return repository.findById(id);
     }
 
     @Override
     public Boolean delete(Integer id) {
-        return false;
+        return repository.deleteById(id);
     }
 
     @Override
     public List<DriverEntity> findAll() {
-        return null;
+        return repository.findAll();
     }
 }
