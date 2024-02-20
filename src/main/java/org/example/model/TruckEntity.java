@@ -9,6 +9,9 @@ public class TruckEntity {
     private List<DriverEntity> drivers;
     private int parkingId;
 
+    public TruckEntity() {
+    }
+
     public TruckEntity(int id, String model, String number, List<DriverEntity> drivers, int parkingId) {
         this.id = id;
         this.model = model;

@@ -7,6 +7,9 @@ public class DriverEntity {
     private String fio;
     private List<TruckEntity> trucks;
 
+    public DriverEntity() {
+    }
+
     public DriverEntity(int id, String fio, List<TruckEntity> trucks) {
         this.id = id;
         this.fio = fio;

@@ -8,6 +8,9 @@ public class ParkingEntity {
     private int square;
     private List<TruckEntity> trucks;
 
+    public ParkingEntity() {
+    }
+
     public ParkingEntity(int id, String address, int square, List<TruckEntity> trucks) {
         this.id = id;
         this.address = address;

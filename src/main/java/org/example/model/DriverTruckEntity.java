@@ -5,6 +5,9 @@ public class DriverTruckEntity {
     private int driverId;
     private int truckId;
 
+    public DriverTruckEntity() {
+    }
+
     public DriverTruckEntity(int id, int driverId, int truckId) {
         this.id = id;
         this.driverId = driverId;
