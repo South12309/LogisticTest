@@ -1,30 +1,37 @@
 package org.example.repository.impl;
 
-import org.example.db.ConnectionManager;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
+import org.example.model.TruckEntity;
 import org.example.repository.DriverEntityRepository;
 import org.example.repository.mapper.DriverResultSetMapper;
+import org.example.repository.mapper.TruckResultSetMapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class DriverEntityRepositoryImpl implements DriverEntityRepository {
-    private DriverResultSetMapper resultSetMapper;
+    private DriverResultSetMapper driverResultSetMapper;
+    private TruckResultSetMapper truckResultSetMapper;
     // private ConnectionManager connectionManager;
 
     @Override
     public DriverEntity findById(Integer id) {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM drivers where id=?");
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSetMapper.mapOneResult(resultSet);
+            PreparedStatement preparedStatementDrivers = connection.prepareStatement("SELECT * FROM drivers where id=?");
+            preparedStatementDrivers.setInt(1, id);
+            ResultSet resultSetDrivers = preparedStatementDrivers.executeQuery();
+            DriverEntity driverEntity = driverResultSetMapper.mapOneResult(resultSetDrivers);
+            PreparedStatement preparedStatementTrucks = connection.prepareStatement("SELECT * FROM trucks where id in " +
+                    "(SELECT truck_id from drivers_trucks where driver_id=?)");
+            preparedStatementTrucks.setInt(1, id);
+            ResultSet resultSetTrucks = preparedStatementTrucks.executeQuery();
+            List<TruckEntity> trucks = truckResultSetMapper.mapListResult(resultSetTrucks);
+            driverEntity.setTrucks(trucks);
+            return driverEntity;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -48,7 +55,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM drivers");
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSetMapper.mapListResult(resultSet);
+            return driverResultSetMapper.mapListResult(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -80,7 +87,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
             preparedStatement.setObject(1, driverEntity.getFio());
             preparedStatement.setObject(2,driverEntity.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSetMapper.mapOneResult(resultSet);
+            return driverResultSetMapper.mapOneResult(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
