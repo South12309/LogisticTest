@@ -30,3 +30,23 @@ create table drivers_trucks
     truck_id        bigint references trucks (id)
 );
 
+insert into parkings (address, square) values ('cherkessk', 30);
+insert into parkings (address, square) values ('psyzh', 50);
+insert into parkings (address, square) values ('chapai', 10);
+
+insert into drivers (fio) values ('Ivanov Ivan Ivanovich');
+insert into drivers (fio) values ('Petrov Petr Petrovich');
+insert into drivers (fio) values ('Nikolaev Nikolay Nikolaevich');
+
+insert into trucks (model, number, parking_id) values ('MAN', 'B001HO09', 1);
+insert into trucks (model, number, parking_id) values ('DAF', 'B002HO09', 2);
+insert into trucks (model, number, parking_id) values ('Gazel', 'B003HO09', 3);
+
+insert into drivers_trucks (driver_id, truck_id) values (1, 1);
+insert into drivers_trucks (driver_id, truck_id) values (1, 3);
+insert into drivers_trucks (driver_id, truck_id) values (2, 1);
+insert into drivers_trucks (driver_id, truck_id) values (2, 2);
+insert into drivers_trucks (driver_id, truck_id) values (3, 1);
+insert into drivers_trucks (driver_id, truck_id) values (3, 2);
+insert into drivers_trucks (driver_id, truck_id) values (3, 3);
+
