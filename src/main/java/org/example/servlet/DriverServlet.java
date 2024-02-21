@@ -8,9 +8,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.model.DriverEntity;
 import org.example.service.DriverService;
+import org.example.service.impl.DriverServiceImpl;
 import org.example.servlet.dto.DriverDto;
 import org.example.servlet.dto.TruckDto;
 import org.example.servlet.mapper.DriverDtoMapper;
+import org.example.servlet.mapper.DriverDtoMapperImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +24,14 @@ import java.util.UUID;
 public class DriverServlet extends HttpServlet {
     private DriverService service;
     private DriverDtoMapper dtomapper;
-    private final ObjectMapper jsonMapper = new ObjectMapper();
+    private ObjectMapper jsonMapper;
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        service = new DriverServiceImpl();
+        dtomapper = new DriverDtoMapperImpl();
+        jsonMapper = new ObjectMapper();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -6,6 +6,7 @@ import org.example.model.TruckEntity;
 import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
 import org.example.repository.mapper.DriverResultSetMapper;
+import org.example.repository.mapper.DriverResultSetMapperImpl;
 import org.example.repository.mapper.TruckResultSetMapper;
 
 import java.sql.Connection;
@@ -18,6 +19,11 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     private DriverTruckEntityRepository driverTruckEntityRepository;
     private DriverResultSetMapper driverResultSetMapper;
     // private ConnectionManager connectionManager;
+
+    public DriverEntityRepositoryImpl() {
+        driverTruckEntityRepository = new DriverTruckEntityRepositoryImpl();
+        driverResultSetMapper = new DriverResultSetMapperImpl();
+    }
 
     @Override
     public DriverEntity findById(Integer id) {

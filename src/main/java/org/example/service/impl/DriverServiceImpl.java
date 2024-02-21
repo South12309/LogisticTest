@@ -2,13 +2,18 @@ package org.example.service.impl;
 
 import org.example.model.DriverEntity;
 import org.example.repository.DriverEntityRepository;
+import org.example.repository.impl.DriverEntityRepositoryImpl;
 import org.example.service.DriverService;
 
 import java.util.List;
 import java.util.UUID;
 
 public class DriverServiceImpl implements DriverService {
-    private DriverEntityRepository repository;
+    private final DriverEntityRepository repository;
+
+    public DriverServiceImpl() {
+        repository = new DriverEntityRepositoryImpl();
+    }
     @Override
     public DriverEntity save(DriverEntity driverEntity) {
         return repository.save(driverEntity);
