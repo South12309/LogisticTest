@@ -24,8 +24,8 @@ public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityReposit
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks where id in " +
                     "(SELECT truck_id from drivers_trucks where driver_id=?)");
             preparedStatement.setInt(1, driverId);
-            ResultSet resultSetTrucks = preparedStatement.executeQuery();
-            return truckResultSetMapper.mapListResult(resultSetTrucks);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return truckResultSetMapper.mapListResult(resultSet);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -38,8 +38,8 @@ public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityReposit
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM drivers where id in " +
                     "(SELECT driver_id from drivers_trucks where truck_id=?)");
             preparedStatement.setInt(1, truckId);
-            ResultSet resultSetTrucks = preparedStatement.executeQuery();
-            return truckResultSetMapper.mapListResult(resultSetTrucks);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return driverResultSetMapper.mapListResult(resultSet);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
