@@ -10,23 +10,18 @@ import java.util.List;
 public class DriverResultSetMapperImpl implements DriverResultSetMapper {
 
     @Override
-    public List<DriverEntity> mapListResult(ResultSet resultSet) {
+    public List<DriverEntity> mapListResult(ResultSet resultSet) throws SQLException {
         List<DriverEntity> resultDriverList = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                resultDriverList.add(new DriverEntity(resultSet.getInt("id"), resultSet.getString("fio"), ));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        while (resultSet.next()) {
+            resultDriverList.add(mapOneResult(resultSet));
         }
-
+        return resultDriverList;
     }
-
-
-
     @Override
-    public DriverEntity mapOneResult(ResultSet resultSet) {
-
-        return null;
+    public DriverEntity mapOneResult(ResultSet resultSet) throws SQLException {
+        DriverEntity driverEntity = new DriverEntity();
+        driverEntity.setId(resultSet.getInt("id"));
+        driverEntity.setFio(resultSet.getString("fio"));
+        return driverEntity;
     }
 }
