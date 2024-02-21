@@ -46,11 +46,14 @@ public class DriverServlet extends HttpServlet {
             List<DriverDto> result = dtomapper.entityToDto(service.findAll());
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(jsonMapper.writeValueAsString(result));
+            //System.out.println(jsonMapper.writeValueAsString(result));
         } else {
             DriverDto result = dtomapper.entityToDto(service.findById(Integer.parseInt(id)));
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(jsonMapper.writeValueAsString(result));
+            //System.out.println(jsonMapper.writeValueAsString(result));
         }
+
     }
 
     @Override

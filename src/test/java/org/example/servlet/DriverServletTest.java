@@ -27,6 +27,7 @@ class DriverServletTest {
         HttpServletResponse mockResponse = mock(HttpServletResponse.class);
         PrintWriter mockPrintWriter = mock(PrintWriter.class);
         when(mockResponse.getWriter()).thenReturn(mockPrintWriter);
+       // when(mockPrintWriter.write(anyString())).thenReturn()
         driverServlet.doGet(mockRequest, mockResponse);
     }
 

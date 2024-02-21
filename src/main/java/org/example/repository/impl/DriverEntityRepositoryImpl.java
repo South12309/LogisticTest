@@ -48,7 +48,8 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<DriverEntity> driverEntities = driverResultSetMapper.mapListResult(resultSet);
             for (DriverEntity driverEntity : driverEntities) {
-                driverEntity.setTrucks(driverTruckEntityRepository.findTrucksByDriverId(driverEntity.getId()));
+                List<TruckEntity> trucksByDriverId = driverTruckEntityRepository.findTrucksByDriverId(driverEntity.getId());
+                driverEntity.setTrucks(trucksByDriverId);
             }
             return driverEntities;
         } catch (SQLException e) {
