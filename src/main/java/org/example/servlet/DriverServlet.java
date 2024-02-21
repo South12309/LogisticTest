@@ -25,9 +25,15 @@ public class DriverServlet extends HttpServlet {
     private DriverService service;
     private DriverDtoMapper dtomapper;
     private ObjectMapper jsonMapper;
-    @Override
-    public void init() throws ServletException {
-        super.init();
+//    @Override
+//    public void init() throws ServletException {
+//        super.init();
+//        service = new DriverServiceImpl();
+//        dtomapper = new DriverDtoMapperImpl();
+//        jsonMapper = new ObjectMapper();
+//    }
+
+    public DriverServlet() {
         service = new DriverServiceImpl();
         dtomapper = new DriverDtoMapperImpl();
         jsonMapper = new ObjectMapper();
