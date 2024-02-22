@@ -8,13 +8,13 @@ public class TruckDto {
     private int id;
     private String model;
     private String number;
-    private List<DriverEntity> drivers;
+    private List<DriverDto> drivers;
     private int parkingId;
 
     public TruckDto() {
     }
 
-    public TruckDto(int id, String model, String number, List<DriverEntity> drivers, int parkingId) {
+    public TruckDto(int id, String model, String number, List<DriverDto> drivers, int parkingId) {
         this.id = id;
         this.model = model;
         this.number = number;
@@ -46,11 +46,11 @@ public class TruckDto {
         this.number = number;
     }
 
-    public List<DriverEntity> getDrivers() {
+    public List<DriverDto> getDrivers() {
         return drivers;
     }
 
-    public void setDrivers(List<DriverEntity> drivers) {
+    public void setDrivers(List<DriverDto> drivers) {
         this.drivers = drivers;
     }
 

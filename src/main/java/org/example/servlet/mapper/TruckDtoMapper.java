@@ -1,10 +1,15 @@
 package org.example.servlet.mapper;
 
+import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
+import org.example.servlet.dto.DriverDto;
 import org.example.servlet.dto.TruckDto;
 
-public interface TruckDtoMapper {
-    TruckEntity map(TruckDto truckDto);
+import java.util.List;
 
-    TruckDto map(TruckEntity truckEntity);
+public interface TruckDtoMapper {
+    TruckEntity dtoToEntity(TruckDto dto);
+    TruckDto entityToDto(TruckEntity entity);
+    List<TruckDto> entityToDto(List<TruckEntity> entities);
+    List<TruckEntity> dtoToEntity(List<TruckDto> dtos);
 }

@@ -8,12 +8,12 @@ public class ParkingDto {
     private int id;
     private String address;
     private int square;
-    private List<TruckEntity> trucks;
+    private List<TruckDto> trucks;
 
     public ParkingDto() {
     }
 
-    public ParkingDto(int id, String address, int square, List<TruckEntity> trucks) {
+    public ParkingDto(int id, String address, int square, List<TruckDto> trucks) {
         this.id = id;
         this.address = address;
         this.square = square;
@@ -44,11 +44,11 @@ public class ParkingDto {
         this.square = square;
     }
 
-    public List<TruckEntity> getTrucks() {
+    public List<TruckDto> getTrucks() {
         return trucks;
     }
 
-    public void setTrucks(List<TruckEntity> trucks) {
+    public void setTrucks(List<TruckDto> trucks) {
         this.trucks = trucks;
     }
 }

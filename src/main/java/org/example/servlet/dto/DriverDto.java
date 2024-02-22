@@ -7,12 +7,12 @@ import java.util.List;
 public class DriverDto {
     private int id;
     private String fio;
-    private List<TruckEntity> trucks;
+    private List<TruckDto> trucks;
 
     public DriverDto() {
     }
 
-    public DriverDto(int id, String fio, List<TruckEntity> trucks) {
+    public DriverDto(int id, String fio, List<TruckDto> trucks) {
         this.id = id;
         this.fio = fio;
         this.trucks = trucks;
@@ -34,11 +34,11 @@ public class DriverDto {
         this.fio = fio;
     }
 
-    public List<TruckEntity> getTrucks() {
+    public List<TruckDto> getTrucks() {
         return trucks;
     }
 
-    public void setTrucks(List<TruckEntity> trucks) {
+    public void setTrucks(List<TruckDto> trucks) {
         this.trucks = trucks;
     }
 }

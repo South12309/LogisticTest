@@ -7,12 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DriverDtoMapperImpl implements DriverDtoMapper {
+    private TruckDtoMapper truckDtoMapper;
+
+    public DriverDtoMapperImpl() {
+        truckDtoMapper = new TruckDtoMapperImpl();
+    }
+
     @Override
     public DriverDto entityToDto(DriverEntity entity) {
         DriverDto driverDto = new DriverDto();
         driverDto.setId(entity.getId());
         driverDto.setFio(entity.getFio());
-        driverDto.setTrucks(entity.getTrucks());
+        driverDto.setTrucks(truckDtoMapper.entityToDto(entity.getTrucks()));
         return driverDto;
     }
 
@@ -30,7 +36,7 @@ public class DriverDtoMapperImpl implements DriverDtoMapper {
         DriverEntity driverEntity = new DriverEntity();
         driverEntity.setId(dto.getId());
         driverEntity.setFio(dto.getFio());
-        driverEntity.setTrucks(dto.getTrucks());
+        driverEntity.setTrucks(truckDtoMapper.dtoToEntity(dto.getTrucks()));
         return driverEntity;
     }
 
