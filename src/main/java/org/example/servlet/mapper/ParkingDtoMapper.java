@@ -5,8 +5,11 @@ import org.example.model.ParkingEntity;
 import org.example.servlet.dto.DriverDto;
 import org.example.servlet.dto.ParkingDto;
 
-public interface ParkingDtoMapper {
-    ParkingEntity map(ParkingDto parkingDto);
+import java.util.List;
 
-    ParkingDto map(ParkingEntity parkingEntity);
+public interface ParkingDtoMapper {
+    ParkingDto entityToDto(ParkingEntity entity);
+    List<ParkingDto> entityToDto(List<ParkingEntity> entities);
+    ParkingEntity dtoToEntity(ParkingDto dto);
+    List<ParkingEntity> dtoToEntity(List<ParkingDto> dtos);
 }
