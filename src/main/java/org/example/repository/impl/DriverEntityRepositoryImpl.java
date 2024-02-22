@@ -18,7 +18,6 @@ import java.util.List;
 public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     private DriverTruckEntityRepository driverTruckEntityRepository;
     private DriverResultSetMapper driverResultSetMapper;
-    // private ConnectionManager connectionManager;
 
     public DriverEntityRepositoryImpl() {
         driverTruckEntityRepository = new DriverTruckEntityRepositoryImpl();

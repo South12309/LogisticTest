@@ -29,8 +29,9 @@ public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityReposit
     @Override
     public List<TruckEntity> findTrucksByDriverId(Integer driverId) {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks where id in " +
-                    "(SELECT truck_id from drivers_trucks where driver_id=?)");
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT * FROM trucks where id in " +
+                            "(SELECT truck_id from drivers_trucks where driver_id=?)");
             preparedStatement.setInt(1, driverId);
             ResultSet resultSet = preparedStatement.executeQuery();
             return truckResultSetMapper.mapListResult(resultSet);
@@ -43,8 +44,9 @@ public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityReposit
     @Override
     public List<DriverEntity> findDriversByTruckId(Integer truckId) {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM drivers where id in " +
-                    "(SELECT driver_id from drivers_trucks where truck_id=?)");
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT * FROM drivers where id in " +
+                            "(SELECT driver_id from drivers_trucks where truck_id=?)");
             preparedStatement.setInt(1, truckId);
             ResultSet resultSet = preparedStatement.executeQuery();
             return driverResultSetMapper.mapListResult(resultSet);
