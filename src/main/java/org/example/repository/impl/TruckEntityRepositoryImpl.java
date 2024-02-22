@@ -5,6 +5,7 @@ import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
 import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
+import org.example.repository.ParkingEntityRepository;
 import org.example.repository.TruckEntityRepository;
 import org.example.repository.mapper.TruckResultSetMapper;
 import org.example.repository.mapper.TruckResultSetMapperImpl;
@@ -39,7 +40,6 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             TruckEntity truckEntity = truckResultSetMapper.mapOneResult(resultSet);
-            //TODO добавить парковку
             truckEntity.setDrivers(driverTruckEntityRepository.findDriversByTruckId(truckEntity.getId()));
             return truckEntity;
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO trucks (model, number, parking_id) VALUES(?, ?, ?)");
             preparedStatement.setString(1, truckEntity.getModel());
             preparedStatement.setString(2, truckEntity.getNumber());
-            preparedStatement.setInt(3, truckEntity.getParkingId());
+            preparedStatement.setInt(3, truckEntity.getParking().getId());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -101,7 +101,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
                             "UPDATE trucks SET model = ?, number=?, parking_id=? WHERE id = ?");
             preparedStatement.setObject(1, truckEntity.getModel());
             preparedStatement.setObject(2, truckEntity.getNumber());
-            preparedStatement.setObject(3,truckEntity.getParkingId());
+            preparedStatement.setObject(3,truckEntity.getParking().getId());
             preparedStatement.setObject(4,truckEntity.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             return truckResultSetMapper.mapOneResult(resultSet);

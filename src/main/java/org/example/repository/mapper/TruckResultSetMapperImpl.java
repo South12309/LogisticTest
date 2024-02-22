@@ -1,7 +1,10 @@
 package org.example.repository.mapper;
 
 import org.example.model.DriverEntity;
+import org.example.model.ParkingEntity;
 import org.example.model.TruckEntity;
+import org.example.repository.ParkingEntityRepository;
+import org.example.repository.impl.ParkingEntityRepositoryImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TruckResultSetMapperImpl implements TruckResultSetMapper {
+    private ParkingEntityRepository parkingEntityRepository;
     private static TruckResultSetMapper INSTANCE;
 
     public static TruckResultSetMapper getINSTANCE() {
@@ -18,6 +22,7 @@ public class TruckResultSetMapperImpl implements TruckResultSetMapper {
         return INSTANCE;
     }
     private TruckResultSetMapperImpl() {
+        parkingEntityRepository = ParkingEntityRepositoryImpl.getINSTANCE();
 
     }
 
@@ -27,7 +32,8 @@ public class TruckResultSetMapperImpl implements TruckResultSetMapper {
         truckEntity.setId(resultSet.getInt("id"));
         truckEntity.setModel(resultSet.getString("model"));
         truckEntity.setNumber(resultSet.getString("number"));
-        truckEntity.setParkingId(resultSet.getInt("parking_id"));
+        ParkingEntity parking = parkingEntityRepository.findById(resultSet.getInt("parking_id"));
+        truckEntity.setParking(parking);
         return truckEntity;
     }
 
