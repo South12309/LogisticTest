@@ -35,7 +35,7 @@ public class DriverServlet extends HttpServlet {
 
     public DriverServlet() {
         service = new DriverServiceImpl();
-        dtomapper = new DriverDtoMapperImpl();
+        dtomapper = DriverDtoMapperImpl.getINSTANCE();
         jsonMapper = new ObjectMapper();
     }
 

@@ -8,9 +8,17 @@ import java.util.List;
 
 public class DriverDtoMapperImpl implements DriverDtoMapper {
     private TruckDtoMapper truckDtoMapper;
+    private static DriverDtoMapper INSTANSE;
 
-    public DriverDtoMapperImpl() {
-        truckDtoMapper = new TruckDtoMapperImpl();
+    private DriverDtoMapperImpl() {
+        truckDtoMapper = TruckDtoMapperImpl.getINSTANCE();
+    }
+
+    public static DriverDtoMapper getINSTANCE() {
+        if (INSTANSE==null) {
+            INSTANSE = new DriverDtoMapperImpl();
+        }
+        return INSTANSE;
     }
 
     @Override
