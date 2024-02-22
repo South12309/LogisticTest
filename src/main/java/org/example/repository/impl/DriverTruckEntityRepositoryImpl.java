@@ -3,6 +3,7 @@ package org.example.repository.impl;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
+import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
 import org.example.repository.mapper.DriverResultSetMapper;
 import org.example.repository.mapper.DriverResultSetMapperImpl;
@@ -18,12 +19,19 @@ import java.util.List;
 public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityRepository {
     private DriverResultSetMapper driverResultSetMapper;
     private TruckResultSetMapper truckResultSetMapper;
-    // private ConnectionManager connectionManager;
+    private static DriverTruckEntityRepository INSTANCE;
+
+    public static DriverTruckEntityRepository getINSTANCE() {
+        if (INSTANCE==null) {
+            INSTANCE = new DriverTruckEntityRepositoryImpl();
+        }
+        return INSTANCE;
+    }
 
 
-    public DriverTruckEntityRepositoryImpl() {
-        driverResultSetMapper = new DriverResultSetMapperImpl();
-        truckResultSetMapper = new TruckResultSetMapperImpl();
+    private DriverTruckEntityRepositoryImpl() {
+        driverResultSetMapper = DriverResultSetMapperImpl.getINSTANCE();
+        truckResultSetMapper = TruckResultSetMapperImpl.getINSTANCE();
     }
 
     @Override

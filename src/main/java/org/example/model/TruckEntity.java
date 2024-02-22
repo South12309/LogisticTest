@@ -7,17 +7,17 @@ public class TruckEntity {
     private String model;
     private String number;
     private List<DriverEntity> drivers;
-    private int parkingId;
+    private ParkingEntity parking;
 
     public TruckEntity() {
     }
 
-    public TruckEntity(int id, String model, String number, List<DriverEntity> drivers, int parkingId) {
+    public TruckEntity(int id, String model, String number, List<DriverEntity> drivers, ParkingEntity parking) {
         this.id = id;
         this.model = model;
         this.number = number;
         this.drivers = drivers;
-        this.parkingId = parkingId;
+        this.parking = parking;
     }
 
     public int getId() {
@@ -52,11 +52,11 @@ public class TruckEntity {
         this.drivers = drivers;
     }
 
-    public int getParkingId() {
-        return parkingId;
+    public ParkingEntity getParking() {
+        return parking;
     }
 
-    public void setParkingId(int parkingId) {
-        this.parkingId = parkingId;
+    public void setParking(ParkingEntity parking) {
+        this.parking = parking;
     }
 }

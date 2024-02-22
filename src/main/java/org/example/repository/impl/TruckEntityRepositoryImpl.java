@@ -3,6 +3,7 @@ package org.example.repository.impl;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
+import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
 import org.example.repository.TruckEntityRepository;
 import org.example.repository.mapper.TruckResultSetMapper;
@@ -17,10 +18,18 @@ import java.util.List;
 public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     private TruckResultSetMapper truckResultSetMapper;
     private DriverTruckEntityRepository driverTruckEntityRepository;
+    private static TruckEntityRepository INSTANCE;
 
-    public TruckEntityRepositoryImpl() {
-        truckResultSetMapper = new TruckResultSetMapperImpl();
-        driverTruckEntityRepository = new DriverTruckEntityRepositoryImpl();
+    public static TruckEntityRepository getINSTANCE() {
+        if (INSTANCE==null) {
+            INSTANCE = new TruckEntityRepositoryImpl();
+        }
+        return INSTANCE;
+    }
+
+    private TruckEntityRepositoryImpl() {
+        truckResultSetMapper = TruckResultSetMapperImpl.getINSTANCE();
+        driverTruckEntityRepository = DriverTruckEntityRepositoryImpl.getINSTANCE();
     }
 
     @Override
@@ -30,6 +39,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             TruckEntity truckEntity = truckResultSetMapper.mapOneResult(resultSet);
+            //TODO добавить парковку
             truckEntity.setDrivers(driverTruckEntityRepository.findDriversByTruckId(truckEntity.getId()));
             return truckEntity;
         } catch (SQLException e) {

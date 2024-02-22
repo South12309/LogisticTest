@@ -9,6 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TruckResultSetMapperImpl implements TruckResultSetMapper {
+    private static TruckResultSetMapper INSTANCE;
+
+    public static TruckResultSetMapper getINSTANCE() {
+        if (INSTANCE==null) {
+            INSTANCE = new TruckResultSetMapperImpl();
+        }
+        return INSTANCE;
+    }
+    private TruckResultSetMapperImpl() {
+
+    }
 
     @Override
     public TruckEntity mapOneResult(ResultSet resultSet) throws SQLException {

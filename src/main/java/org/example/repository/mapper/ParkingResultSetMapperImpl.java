@@ -7,6 +7,17 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class ParkingResultSetMapperImpl implements ParkingResultSetMapper {
+    private static ParkingResultSetMapper INSTANCE;
+
+    public static ParkingResultSetMapper getINSTANCE() {
+        if (INSTANCE==null) {
+            INSTANCE = new ParkingResultSetMapperImpl();
+        }
+        return INSTANCE;
+    }
+    private ParkingResultSetMapperImpl() {
+
+    }
 
     @Override
     public ParkingEntity mapOneResult(ResultSet resultSet) {

@@ -12,7 +12,7 @@ public class DriverServiceImpl implements DriverService {
     private final DriverEntityRepository repository;
 
     public DriverServiceImpl() {
-        repository = new DriverEntityRepositoryImpl();
+        repository = DriverEntityRepositoryImpl.getINSTANCE();
     }
     @Override
     public DriverEntity save(DriverEntity driverEntity) {
