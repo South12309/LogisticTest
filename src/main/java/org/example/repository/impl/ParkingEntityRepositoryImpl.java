@@ -4,10 +4,13 @@ import org.example.db.ConnectionManager;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.model.ParkingEntity;
+import org.example.model.TruckEntity;
 import org.example.repository.DriverEntityRepository;
 import org.example.repository.ParkingEntityRepository;
+import org.example.repository.TruckEntityRepository;
 import org.example.repository.mapper.DriverResultSetMapper;
 import org.example.repository.mapper.ParkingResultSetMapper;
+import org.example.repository.mapper.ParkingResultSetMapperImpl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +21,19 @@ import java.util.UUID;
 
 public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
     private ParkingResultSetMapper resultSetMapper;
-   // private ConnectionManager connectionManager;
+    private TruckEntityRepository truckEntityRepository;
+    private static ParkingEntityRepository INSTANCE;
+    public static ParkingEntityRepository getINSTANCE() {
+        if (INSTANCE==null) {
+            INSTANCE = new ParkingEntityRepositoryImpl();
+        }
+        return INSTANCE;
+    }
+
+    public ParkingEntityRepositoryImpl() {
+        resultSetMapper = ParkingResultSetMapperImpl.getINSTANCE();
+        truckEntityRepository = TruckEntityRepositoryImpl.getINSTANCE();
+    }
 
     @Override
     public ParkingEntity findById(Integer id) {
@@ -26,12 +41,28 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM parkings where id=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSetMapper.mapOneResult(resultSet);
+            ParkingEntity parkingEntity = resultSetMapper.mapOneResult(resultSet);
+            parkingEntity.setTrucks(truckEntityRepository.findByParkingId(parkingEntity.getId()));
+            return parkingEntity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
+    @Override
+    public List<ParkingEntity> findAll() {
+        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM parkings");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<ParkingEntity> parkingEntities = resultSetMapper.mapListResult(resultSet);
+            for (ParkingEntity parkingEntity : parkingEntities) {
+                List<TruckEntity> trucksByParkingId = truckEntityRepository.findByParkingId(parkingEntity.getId());
+                parkingEntity.setTrucks(trucksByParkingId);
+            }
+            return parkingEntities;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Override
     public boolean deleteById(Integer id) {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
@@ -39,17 +70,6 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
             preparedStatement.setInt(1, id);
             int result = preparedStatement.executeUpdate();
             return result > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public List<ParkingEntity> findAll() {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM parkings");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSetMapper.mapListResult(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

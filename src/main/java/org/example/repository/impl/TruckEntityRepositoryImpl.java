@@ -109,4 +109,21 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<TruckEntity> findByParkingId(Integer parkingId) {
+        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks where parking_id=?");
+            preparedStatement.setInt(1, parkingId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<TruckEntity> truckEntities = truckResultSetMapper.mapListResult(resultSet);
+            for (TruckEntity truckEntity : truckEntities) {
+                List<DriverEntity> driversByTruckId = driverTruckEntityRepository.findDriversByTruckId(truckEntity.getId());
+                truckEntity.setDrivers(driversByTruckId);
+            }
+            return truckEntities;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
