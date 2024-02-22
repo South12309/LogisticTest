@@ -8,15 +8,18 @@ import java.util.List;
 
 public class TruckDtoMapperImpl implements TruckDtoMapper {
     private DriverDtoMapper driverDtoMapper;
+    private ParkingDtoMapper parkingDtoMapper;
     private static TruckDtoMapper INSTANSE;
-    public TruckDtoMapperImpl() {
-        driverDtoMapper = DriverDtoMapperImpl.getINSTANCE();
-    }
+
     public static TruckDtoMapper getINSTANCE() {
         if (INSTANSE==null) {
             INSTANSE = new TruckDtoMapperImpl();
         }
         return INSTANSE;
+    }
+    private TruckDtoMapperImpl() {
+        driverDtoMapper = DriverDtoMapperImpl.getINSTANCE();
+        parkingDtoMapper = ParkingDtoMapperImpl.getINSTANCE();
     }
 
     @Override
@@ -25,7 +28,7 @@ public class TruckDtoMapperImpl implements TruckDtoMapper {
         truckEntity.setId(dto.getId());
         truckEntity.setModel(dto.getModel());
         truckEntity.setNumber(dto.getNumber());
-        truckEntity.setParkingId(dto.getParkingId());
+        truckEntity.setParking(parkingDtoMapper.dtoToEntity(dto.getParking()));
         truckEntity.setDrivers(driverDtoMapper.dtoToEntity(dto.getDrivers()));
         return truckEntity;
     }
@@ -36,7 +39,7 @@ public class TruckDtoMapperImpl implements TruckDtoMapper {
         truckDto.setId(entity.getId());
         truckDto.setModel(entity.getModel());
         truckDto.setNumber(entity.getNumber());
-        truckDto.setParkingId(entity.getParkingId());
+        truckDto.setParkingId(parkingDtoMapper.entityToDto(entity.getParking()));
         truckDto.setDrivers(driverDtoMapper.entityToDto(entity.getDrivers()));
         return truckDto;
     }

@@ -9,17 +9,17 @@ public class TruckDto {
     private String model;
     private String number;
     private List<DriverDto> drivers;
-    private int parkingId;
+    private ParkingDto parking;
 
     public TruckDto() {
     }
 
-    public TruckDto(int id, String model, String number, List<DriverDto> drivers, int parkingId) {
+    public TruckDto(int id, String model, String number, List<DriverDto> drivers, ParkingDto parking) {
         this.id = id;
         this.model = model;
         this.number = number;
         this.drivers = drivers;
-        this.parkingId = parkingId;
+        this.parking = parking;
     }
 
     public int getId() {
@@ -54,11 +54,11 @@ public class TruckDto {
         this.drivers = drivers;
     }
 
-    public int getParkingId() {
-        return parkingId;
+    public ParkingDto getParking() {
+        return parking;
     }
 
-    public void setParkingId(int parkingId) {
-        this.parkingId = parkingId;
+    public void setParkingId(ParkingDto parking) {
+        this.parking = parking;
     }
 }
