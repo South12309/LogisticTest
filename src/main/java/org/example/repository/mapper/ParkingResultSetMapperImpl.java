@@ -23,6 +23,9 @@ public class ParkingResultSetMapperImpl implements ParkingResultSetMapper {
 
     @Override
     public ParkingEntity mapOneResult(ResultSet resultSet) throws SQLException {
+        if (resultSet.isBeforeFirst()) {
+            resultSet.next();
+        }
         ParkingEntity parkingEntity = new ParkingEntity();
         parkingEntity.setId(resultSet.getInt("id"));
         parkingEntity.setAddress(resultSet.getString("address"));

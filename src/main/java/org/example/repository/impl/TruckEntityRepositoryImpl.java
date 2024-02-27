@@ -2,11 +2,14 @@ package org.example.repository.impl;
 
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
+import org.example.model.ParkingEntity;
 import org.example.model.TruckEntity;
 import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
 import org.example.repository.ParkingEntityRepository;
 import org.example.repository.TruckEntityRepository;
+import org.example.repository.mapper.ParkingResultSetMapper;
+import org.example.repository.mapper.ParkingResultSetMapperImpl;
 import org.example.repository.mapper.TruckResultSetMapper;
 import org.example.repository.mapper.TruckResultSetMapperImpl;
 
@@ -14,11 +17,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     private TruckResultSetMapper truckResultSetMapper;
     private DriverTruckEntityRepository driverTruckEntityRepository;
+    private ParkingEntityRepository parkingEntityRepository = ParkingEntityRepositoryImpl.getINSTANCE();
+
     private static TruckEntityRepository INSTANCE = new TruckEntityRepositoryImpl();
 
     public static TruckEntityRepository getINSTANCE() {
@@ -40,6 +46,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             TruckEntity truckEntity = truckResultSetMapper.mapOneResult(resultSet);
+            truckEntity.setParking(parkingEntityRepository.findById(resultSet.getInt("parking_id")));
             truckEntity.setDrivers(driverTruckEntityRepository.findDriversByTruckId(truckEntity.getId()));
             return truckEntity;
         } catch (SQLException e) {
@@ -52,10 +59,12 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks");
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<TruckEntity> truckEntities = truckResultSetMapper.mapListResult(resultSet);
-            for (TruckEntity truckEntity : truckEntities) {
-                List<DriverEntity> driversByTruckId = driverTruckEntityRepository.findDriversByTruckId(truckEntity.getId());
-                truckEntity.setDrivers(driversByTruckId);
+            List<TruckEntity> truckEntities = new ArrayList<>();
+            while (resultSet.next()) {
+                TruckEntity truckEntity = truckResultSetMapper.mapOneResult(resultSet);
+                truckEntity.setDrivers(driverTruckEntityRepository.findDriversByTruckId(truckEntity.getId()));
+                truckEntity.setParking(parkingEntityRepository.findById(resultSet.getInt("parking_id")));
+                truckEntities.add(truckEntity);
             }
             return truckEntities;
         } catch (SQLException e) {

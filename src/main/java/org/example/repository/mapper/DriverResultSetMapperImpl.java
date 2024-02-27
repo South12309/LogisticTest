@@ -32,6 +32,9 @@ public class DriverResultSetMapperImpl implements DriverResultSetMapper {
     }
     @Override
     public DriverEntity mapOneResult(ResultSet resultSet) throws SQLException {
+        if (resultSet.isBeforeFirst()) {
+            resultSet.next();
+        }
         DriverEntity driverEntity = new DriverEntity();
         driverEntity.setId(resultSet.getInt("id"));
         driverEntity.setFio(resultSet.getString("fio"));

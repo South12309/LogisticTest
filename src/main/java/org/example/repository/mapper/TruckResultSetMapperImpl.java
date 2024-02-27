@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TruckResultSetMapperImpl implements TruckResultSetMapper {
-    private ParkingEntityRepository parkingEntityRepository;
     private static TruckResultSetMapper INSTANCE;
 
     public static TruckResultSetMapper getINSTANCE() {
@@ -22,18 +21,20 @@ public class TruckResultSetMapperImpl implements TruckResultSetMapper {
         return INSTANCE;
     }
     private TruckResultSetMapperImpl() {
-        parkingEntityRepository = ParkingEntityRepositoryImpl.getINSTANCE();
+      //  parkingEntityRepository = ParkingEntityRepositoryImpl.getINSTANCE();
 
     }
 
     @Override
     public TruckEntity mapOneResult(ResultSet resultSet) throws SQLException {
+        if (resultSet.isBeforeFirst()) {
+            resultSet.next();
+        }
         TruckEntity truckEntity = new TruckEntity();
         truckEntity.setId(resultSet.getInt("id"));
         truckEntity.setModel(resultSet.getString("model"));
         truckEntity.setNumber(resultSet.getString("number"));
-        ParkingEntity parking = parkingEntityRepository.findById(resultSet.getInt("parking_id"));
-        truckEntity.setParking(parking);
+
         return truckEntity;
     }
 
