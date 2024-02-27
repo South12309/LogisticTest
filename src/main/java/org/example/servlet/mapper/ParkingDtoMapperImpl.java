@@ -8,31 +8,20 @@ import org.example.servlet.dto.ParkingDto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParkingDtoMapperImpl implements ParkingDtoMapper {
-    private TruckDtoMapper truckDtoMapper;
-    private static ParkingDtoMapper INSTANSE;
-    public static ParkingDtoMapper getINSTANCE() {
-        if (INSTANSE==null) {
-            INSTANSE = new ParkingDtoMapperImpl();
-        }
-        return INSTANSE;
-    }
+public class ParkingDtoMapperImpl {
     private ParkingDtoMapperImpl() {
-        truckDtoMapper = TruckDtoMapperImpl.getINSTANCE();
     }
 
-    @Override
-    public ParkingDto entityToDto(ParkingEntity entity) {
+    public static ParkingDto entityToDto(ParkingEntity entity) {
         ParkingDto parkingDto = new ParkingDto();
         parkingDto.setId(entity.getId());
         parkingDto.setAddress(entity.getAddress());
         parkingDto.setSquare(entity.getSquare());
-        parkingDto.setTrucks(truckDtoMapper.entityToDto(entity.getTrucks()));
+        parkingDto.setTrucks(TruckDtoMapperImpl.entityToDto(entity.getTrucks()));
         return parkingDto;
     }
 
-    @Override
-    public List<ParkingDto> entityToDto(List<ParkingEntity> entities) {
+    public static List<ParkingDto> entityToDto(List<ParkingEntity> entities) {
         List<ParkingDto> parkingDtos = new ArrayList<>();
         for (ParkingEntity entity : entities) {
             parkingDtos.add(entityToDto(entity));
@@ -40,18 +29,16 @@ public class ParkingDtoMapperImpl implements ParkingDtoMapper {
         return parkingDtos;
     }
 
-    @Override
-    public ParkingEntity dtoToEntity(ParkingDto dto) {
+    public static ParkingEntity dtoToEntity(ParkingDto dto) {
         ParkingEntity parkingEntity = new ParkingEntity();
         parkingEntity.setId(dto.getId());
         parkingEntity.setAddress(dto.getAddress());
         parkingEntity.setSquare(dto.getSquare());
-        parkingEntity.setTrucks(truckDtoMapper.dtoToEntity(dto.getTrucks()));
+        parkingEntity.setTrucks(TruckDtoMapperImpl.dtoToEntity(dto.getTrucks()));
         return parkingEntity;
     }
 
-    @Override
-    public List<ParkingEntity> dtoToEntity(List<ParkingDto> dtos) {
+    public static List<ParkingEntity> dtoToEntity(List<ParkingDto> dtos) {
         List<ParkingEntity> parkingEntities = new ArrayList<>();
         for (ParkingDto dto : dtos) {
             parkingEntities.add(dtoToEntity(dto));

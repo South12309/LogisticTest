@@ -22,7 +22,7 @@ import java.util.UUID;
 public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
     private ParkingResultSetMapper resultSetMapper;
     private TruckEntityRepository truckEntityRepository;
-    private static ParkingEntityRepository INSTANCE;
+    private static ParkingEntityRepository INSTANCE = new ParkingEntityRepositoryImpl();;
     public static ParkingEntityRepository getINSTANCE() {
         if (INSTANCE==null) {
             INSTANCE = new ParkingEntityRepositoryImpl();

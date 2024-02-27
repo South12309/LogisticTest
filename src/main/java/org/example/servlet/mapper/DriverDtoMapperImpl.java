@@ -6,32 +6,20 @@ import org.example.servlet.dto.DriverDto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DriverDtoMapperImpl implements DriverDtoMapper {
-    private TruckDtoMapper truckDtoMapper;
-    private static DriverDtoMapper INSTANSE;
+public class DriverDtoMapperImpl {
 
     private DriverDtoMapperImpl() {
-        truckDtoMapper = TruckDtoMapperImpl.getINSTANCE();
     }
 
-    public static DriverDtoMapper getINSTANCE() {
-        if (INSTANSE==null) {
-            INSTANSE = new DriverDtoMapperImpl();
-        }
-        return INSTANSE;
-    }
-
-    @Override
-    public DriverDto entityToDto(DriverEntity entity) {
+    public static DriverDto entityToDto(DriverEntity entity) {
         DriverDto driverDto = new DriverDto();
         driverDto.setId(entity.getId());
         driverDto.setFio(entity.getFio());
-        driverDto.setTrucks(truckDtoMapper.entityToDto(entity.getTrucks()));
+        driverDto.setTrucks(TruckDtoMapperImpl.entityToDto(entity.getTrucks()));
         return driverDto;
     }
 
-    @Override
-    public List<DriverDto> entityToDto(List<DriverEntity> entities) {
+    public static List<DriverDto> entityToDto(List<DriverEntity> entities) {
         List<DriverDto> driverDtos = new ArrayList<>();
         for (DriverEntity entity : entities) {
             driverDtos.add(entityToDto(entity));
@@ -39,17 +27,15 @@ public class DriverDtoMapperImpl implements DriverDtoMapper {
         return driverDtos;
     }
 
-    @Override
-    public DriverEntity dtoToEntity(DriverDto dto) {
+    public static DriverEntity dtoToEntity(DriverDto dto) {
         DriverEntity driverEntity = new DriverEntity();
         driverEntity.setId(dto.getId());
         driverEntity.setFio(dto.getFio());
-        driverEntity.setTrucks(truckDtoMapper.dtoToEntity(dto.getTrucks()));
+        driverEntity.setTrucks(TruckDtoMapperImpl.dtoToEntity(dto.getTrucks()));
         return driverEntity;
     }
 
-    @Override
-    public List<DriverEntity> dtoToEntity(List<DriverDto> dtos) {
+    public static  List<DriverEntity> dtoToEntity(List<DriverDto> dtos) {
         List<DriverEntity> driverEntities = new ArrayList<>();
         for (DriverDto dto : dtos) {
             driverEntities.add(dtoToEntity(dto));

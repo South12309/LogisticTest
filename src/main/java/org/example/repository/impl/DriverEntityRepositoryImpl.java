@@ -18,10 +18,10 @@ import java.util.List;
 public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     private DriverTruckEntityRepository driverTruckEntityRepository;
     private DriverResultSetMapper driverResultSetMapper;
-    private static DriverEntityRepository INSTANCE;
+    private static DriverEntityRepository INSTANCE = new DriverEntityRepositoryImpl();
 
     public static DriverEntityRepository getINSTANCE() {
-        if (INSTANCE==null) {
+        if (INSTANCE == null) {
             INSTANCE = new DriverEntityRepositoryImpl();
         }
         return INSTANCE;

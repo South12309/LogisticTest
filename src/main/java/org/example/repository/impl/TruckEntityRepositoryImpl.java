@@ -19,10 +19,10 @@ import java.util.List;
 public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     private TruckResultSetMapper truckResultSetMapper;
     private DriverTruckEntityRepository driverTruckEntityRepository;
-    private static TruckEntityRepository INSTANCE;
+    private static TruckEntityRepository INSTANCE = new TruckEntityRepositoryImpl();
 
     public static TruckEntityRepository getINSTANCE() {
-        if (INSTANCE==null) {
+        if (INSTANCE == null) {
             INSTANCE = new TruckEntityRepositoryImpl();
         }
         return INSTANCE;
@@ -46,6 +46,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public List<TruckEntity> findAll() {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
@@ -93,6 +94,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public TruckEntity update(TruckEntity truckEntity) {
         try (Connection connection = ConnectionManagerImpl.getConnection()) {
@@ -101,8 +103,8 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
                             "UPDATE trucks SET model = ?, number=?, parking_id=? WHERE id = ?");
             preparedStatement.setObject(1, truckEntity.getModel());
             preparedStatement.setObject(2, truckEntity.getNumber());
-            preparedStatement.setObject(3,truckEntity.getParking().getId());
-            preparedStatement.setObject(4,truckEntity.getId());
+            preparedStatement.setObject(3, truckEntity.getParking().getId());
+            preparedStatement.setObject(4, truckEntity.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             return truckResultSetMapper.mapOneResult(resultSet);
         } catch (SQLException e) {

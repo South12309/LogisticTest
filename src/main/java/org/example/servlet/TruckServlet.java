@@ -6,30 +6,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.model.TruckEntity;
 import org.example.service.TruckService;
 import org.example.service.impl.TruckServiceImpl;
-import org.example.servlet.dto.DriverDto;
 import org.example.servlet.dto.TruckDto;
-import org.example.servlet.mapper.DriverDtoMapper;
-import org.example.servlet.mapper.TruckDtoMapper;
 import org.example.servlet.mapper.TruckDtoMapperImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 
 @WebServlet(name = "TruckServlet", value = "/truck")
 public class TruckServlet extends HttpServlet {
     private TruckService service;
-    private TruckDtoMapper dtomapper;
     private ObjectMapper jsonMapper;
 
     public TruckServlet() {
         service = new TruckServiceImpl();
-        dtomapper = TruckDtoMapperImpl.getINSTANCE();
         jsonMapper = new ObjectMapper();
     }
 
@@ -37,12 +30,12 @@ public class TruckServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         if (id == null) {
-            List<TruckDto> result = dtomapper.entityToDto(service.findAll());
+            List<TruckDto> result = TruckDtoMapperImpl.entityToDto(service.findAll());
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(jsonMapper.writeValueAsString(result));
             //System.out.println(jsonMapper.writeValueAsString(result));
         } else {
-            TruckDto result = dtomapper.entityToDto(service.findById(Integer.parseInt(id)));
+            TruckDto result = TruckDtoMapperImpl.entityToDto(service.findById(Integer.parseInt(id)));
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(jsonMapper.writeValueAsString(result));
             //System.out.println(jsonMapper.writeValueAsString(result));
@@ -58,7 +51,7 @@ public class TruckServlet extends HttpServlet {
             requestBody.append(line);
         }
         TruckDto truckDto = jsonMapper.readValue(requestBody.toString(), TruckDto.class);
-        TruckDto saveDto = dtomapper.entityToDto(service.save(dtomapper.dtoToEntity(truckDto)));
+        TruckDto saveDto = TruckDtoMapperImpl.entityToDto(service.save(TruckDtoMapperImpl.dtoToEntity(truckDto)));
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.getWriter().write(jsonMapper.writeValueAsString(saveDto));
     }
@@ -72,7 +65,7 @@ public class TruckServlet extends HttpServlet {
             requestBody.append(line);
         }
         TruckDto truckDto = jsonMapper.readValue(requestBody.toString(), TruckDto.class);
-        TruckDto updatedDto = dtomapper.entityToDto(service.save(dtomapper.dtoToEntity(truckDto)));
+        TruckDto updatedDto = TruckDtoMapperImpl.entityToDto(service.save(TruckDtoMapperImpl.dtoToEntity(truckDto)));
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.getWriter().write(jsonMapper.writeValueAsString(updatedDto));
     }
