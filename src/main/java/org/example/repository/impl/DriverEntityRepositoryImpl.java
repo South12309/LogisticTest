@@ -1,5 +1,6 @@
 package org.example.repository.impl;
 
+import org.example.db.ConnectionManager;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DriverEntityRepositoryImpl implements DriverEntityRepository {
+    private ConnectionManager manager;
     private DriverTruckEntityRepository driverTruckEntityRepository;
     private DriverResultSetMapper driverResultSetMapper;
     private static DriverEntityRepository INSTANCE = new DriverEntityRepositoryImpl();
@@ -30,11 +32,12 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     private DriverEntityRepositoryImpl() {
         driverTruckEntityRepository = DriverTruckEntityRepositoryImpl.getINSTANCE();
         driverResultSetMapper = DriverResultSetMapperImpl.getINSTANCE();
+        manager = ConnectionManagerImpl.getInstance();
     }
 
     @Override
     public DriverEntity findById(Integer id) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatementDrivers = connection.prepareStatement("SELECT * FROM drivers where id=?");
             preparedStatementDrivers.setInt(1, id);
             ResultSet resultSetDrivers = preparedStatementDrivers.executeQuery();
@@ -50,7 +53,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
 
     @Override
     public List<DriverEntity> findAll() {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM drivers");
             ResultSet resultSet = preparedStatement.executeQuery();
             List<DriverEntity> driverEntities = driverResultSetMapper.mapListResult(resultSet);
@@ -66,7 +69,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
 
     @Override
     public boolean deleteById(Integer id) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM drivers where id=?");
             preparedStatement.setInt(1, id);
             int result = preparedStatement.executeUpdate();
@@ -78,7 +81,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
 
     @Override
     public DriverEntity save(DriverEntity driverEntity) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO drivers (fio) VALUES(?)");
             preparedStatement.setString(1, driverEntity.getFio());
             preparedStatement.executeUpdate();
@@ -96,7 +99,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
 
     @Override
     public DriverEntity update(DriverEntity driverEntity) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement =
                     connection.prepareStatement(
                             "UPDATE drivers SET fio = ? WHERE id = ?");

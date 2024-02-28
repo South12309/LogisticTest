@@ -1,5 +1,6 @@
 package org.example.repository.impl;
 
+import org.example.db.ConnectionManager;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.model.ParkingEntity;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TruckEntityRepositoryImpl implements TruckEntityRepository {
+    private ConnectionManager manager;
     private TruckResultSetMapper truckResultSetMapper;
     private DriverTruckEntityRepository driverTruckEntityRepository;
     private ParkingEntityRepository parkingEntityRepository = ParkingEntityRepositoryImpl.getINSTANCE();
@@ -37,11 +39,12 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     private TruckEntityRepositoryImpl() {
         truckResultSetMapper = TruckResultSetMapperImpl.getINSTANCE();
         driverTruckEntityRepository = DriverTruckEntityRepositoryImpl.getINSTANCE();
+        manager = ConnectionManagerImpl.getInstance();
     }
 
     @Override
     public TruckEntity findById(Integer id) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks where id=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -56,7 +59,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public List<TruckEntity> findAll() {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks");
             ResultSet resultSet = preparedStatement.executeQuery();
             List<TruckEntity> truckEntities = new ArrayList<>();
@@ -74,7 +77,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public boolean deleteById(Integer id) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM trucks where id=?");
             preparedStatement.setInt(1, id);
             int result = preparedStatement.executeUpdate();
@@ -86,7 +89,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public TruckEntity save(TruckEntity truckEntity) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO trucks (model, number, parking_id) VALUES(?, ?, ?)");
             preparedStatement.setString(1, truckEntity.getModel());
             preparedStatement.setString(2, truckEntity.getNumber());
@@ -106,7 +109,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public TruckEntity update(TruckEntity truckEntity) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement =
                     connection.prepareStatement(
                             "UPDATE trucks SET model = ?, number=?, parking_id=? WHERE id = ?");
@@ -123,7 +126,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public List<TruckEntity> findByParkingId(Integer parkingId) {
-        try (Connection connection = ConnectionManagerImpl.getConnection()) {
+        try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks where parking_id=?");
             preparedStatement.setInt(1, parkingId);
             ResultSet resultSet = preparedStatement.executeQuery();
