@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mockStatic;
 class ConnectionManagerImplTest {
     private static ConnectionManager manager;
     @Container
-    static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>();
+    static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:15-alpine");
 
     @BeforeAll
     static void beforeAll() throws SQLException {
@@ -25,6 +25,7 @@ class ConnectionManagerImplTest {
         testProperties.put("jdbcUrl", CONTAINER.getJdbcUrl());
         testProperties.put("username", CONTAINER.getUsername());
         testProperties.put("password", CONTAINER.getPassword());
+        CONTAINER.start();
         manager = ConnectionManagerImpl.getInstance();
 
         try (MockedStatic<PropertiesUtil> staticMock = mockStatic(PropertiesUtil.class)) {
@@ -37,6 +38,7 @@ class ConnectionManagerImplTest {
     @AfterAll
     static void afterAll() throws SQLException {
         manager.close();
+        CONTAINER.stop();
 
     }
 

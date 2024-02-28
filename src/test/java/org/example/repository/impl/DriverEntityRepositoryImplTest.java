@@ -1,10 +1,13 @@
 package org.example.repository.impl;
 
+import org.example.model.DriverEntity;
+import org.example.repository.DriverEntityRepository;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DriverEntityRepositoryImplTest {
+    private DriverEntityRepository driverEntityRepository= DriverEntityRepositoryImpl.getINSTANCE();
 
     @Test
     void getINSTANCE() {
@@ -12,6 +15,10 @@ class DriverEntityRepositoryImplTest {
 
     @Test
     void findById() {
+        DriverEntity byId = driverEntityRepository.findById(1);
+        System.out.println(byId.getFio());
+        System.out.println(byId.getId());
+        System.out.println(byId.getTrucks());
     }
 
     @Test
