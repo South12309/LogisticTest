@@ -1,7 +1,5 @@
 package org.example.servlet.dto;
 
-import org.example.model.DriverEntity;
-
 import java.util.List;
 
 public class TruckDto {
@@ -58,7 +56,7 @@ public class TruckDto {
         return parking;
     }
 
-    public void setParkingId(ParkingDto parking) {
+    public void setParking(ParkingDto parking) {
         this.parking = parking;
     }
 }

@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.model.DriverEntity;
 import org.example.service.DriverService;
 import org.example.service.impl.DriverServiceImpl;
 import org.example.servlet.dto.DriverDto;

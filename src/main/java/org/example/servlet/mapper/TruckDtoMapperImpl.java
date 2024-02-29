@@ -11,6 +11,8 @@ public class TruckDtoMapperImpl {
     private TruckDtoMapperImpl() {
     }
     public static TruckEntity dtoToEntity(TruckDto dto) {
+        if (dto==null)
+            return null;
         TruckEntity truckEntity = new TruckEntity();
         truckEntity.setId(dto.getId());
         truckEntity.setModel(dto.getModel());
@@ -20,15 +22,19 @@ public class TruckDtoMapperImpl {
         return truckEntity;
     }
     public static  TruckDto entityToDto(TruckEntity entity) {
+        if (entity==null)
+            return null;
         TruckDto truckDto = new TruckDto();
         truckDto.setId(entity.getId());
         truckDto.setModel(entity.getModel());
         truckDto.setNumber(entity.getNumber());
-        truckDto.setParkingId(ParkingDtoMapperImpl.entityToDto(entity.getParking()));
+        truckDto.setParking(ParkingDtoMapperImpl.entityToDto(entity.getParking()));
         truckDto.setDrivers(DriverDtoMapperImpl.entityToDto(entity.getDrivers()));
         return truckDto;
     }
     public static List<TruckDto> entityToDto(List<TruckEntity> entities) {
+        if (entities==null)
+            return null;
         List<TruckDto> truckDtos = new ArrayList<>();
         for (TruckEntity entity : entities) {
             truckDtos.add(entityToDto(entity));
@@ -36,6 +42,8 @@ public class TruckDtoMapperImpl {
         return truckDtos;
     }
     public static List<TruckEntity> dtoToEntity(List<TruckDto> dtos) {
+        if (dtos==null)
+            return null;
         List<TruckEntity> truckEntities = new ArrayList<>();
         for (TruckDto dto : dtos) {
             truckEntities.add(dtoToEntity(dto));

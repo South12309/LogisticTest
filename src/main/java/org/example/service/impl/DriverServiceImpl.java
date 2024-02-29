@@ -21,7 +21,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverEntity findById(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id).get();
     }
 
     @Override
@@ -31,6 +31,6 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public List<DriverEntity> findAll() {
-        return repository.findAll();
+        return repository.findAll().get();
     }
 }

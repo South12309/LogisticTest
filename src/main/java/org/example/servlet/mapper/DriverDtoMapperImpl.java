@@ -12,6 +12,8 @@ public class DriverDtoMapperImpl {
     }
 
     public static DriverDto entityToDto(DriverEntity entity) {
+        if (entity==null)
+            return null;
         DriverDto driverDto = new DriverDto();
         driverDto.setId(entity.getId());
         driverDto.setFio(entity.getFio());
@@ -20,6 +22,8 @@ public class DriverDtoMapperImpl {
     }
 
     public static List<DriverDto> entityToDto(List<DriverEntity> entities) {
+        if (entities==null)
+            return null;
         List<DriverDto> driverDtos = new ArrayList<>();
         for (DriverEntity entity : entities) {
             driverDtos.add(entityToDto(entity));
@@ -28,6 +32,8 @@ public class DriverDtoMapperImpl {
     }
 
     public static DriverEntity dtoToEntity(DriverDto dto) {
+        if (dto==null)
+            return null;
         DriverEntity driverEntity = new DriverEntity();
         driverEntity.setId(dto.getId());
         driverEntity.setFio(dto.getFio());
@@ -36,6 +42,8 @@ public class DriverDtoMapperImpl {
     }
 
     public static  List<DriverEntity> dtoToEntity(List<DriverDto> dtos) {
+        if (dtos==null)
+            return null;
         List<DriverEntity> driverEntities = new ArrayList<>();
         for (DriverDto dto : dtos) {
             driverEntities.add(dtoToEntity(dto));

@@ -25,7 +25,7 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public ParkingEntity findById(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id).get();
     }
 
     @Override
@@ -35,6 +35,6 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public List<ParkingEntity> findAll() {
-        return repository.findAll();
+        return repository.findAll().get();
     }
 }

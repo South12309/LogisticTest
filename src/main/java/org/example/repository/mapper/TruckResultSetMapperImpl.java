@@ -15,13 +15,13 @@ public class TruckResultSetMapperImpl implements TruckResultSetMapper {
     private static TruckResultSetMapper INSTANCE;
 
     public static TruckResultSetMapper getINSTANCE() {
-        if (INSTANCE==null) {
+        if (INSTANCE == null) {
             INSTANCE = new TruckResultSetMapperImpl();
         }
         return INSTANCE;
     }
+
     private TruckResultSetMapperImpl() {
-      //  parkingEntityRepository = ParkingEntityRepositoryImpl.getINSTANCE();
 
     }
 
@@ -34,7 +34,8 @@ public class TruckResultSetMapperImpl implements TruckResultSetMapper {
         truckEntity.setId(resultSet.getInt("id"));
         truckEntity.setModel(resultSet.getString("model"));
         truckEntity.setNumber(resultSet.getString("number"));
-
+        ParkingEntity parking = new ParkingEntity();
+        parking.setId(resultSet.getInt("parking_id"));
         return truckEntity;
     }
 

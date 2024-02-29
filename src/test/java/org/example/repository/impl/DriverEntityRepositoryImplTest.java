@@ -15,7 +15,7 @@ class DriverEntityRepositoryImplTest {
 
     @Test
     void findById() {
-        DriverEntity byId = driverEntityRepository.findById(1);
+        DriverEntity byId = driverEntityRepository.findById(1).get();
         System.out.println(byId.getFio());
         System.out.println(byId.getId());
         System.out.println(byId.getTrucks());

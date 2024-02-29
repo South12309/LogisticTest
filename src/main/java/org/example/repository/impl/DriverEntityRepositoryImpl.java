@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     private ConnectionManager manager;
@@ -36,7 +37,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     }
 
     @Override
-    public DriverEntity findById(Integer id) {
+    public Optional<DriverEntity> findById(Integer id) {
         try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatementDrivers = connection.prepareStatement("SELECT * FROM drivers where id=?");
             preparedStatementDrivers.setInt(1, id);
@@ -44,7 +45,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
             DriverEntity driverEntity = driverResultSetMapper.mapOneResult(resultSetDrivers);
             driverEntity.setTrucks(driverTruckEntityRepository.findTrucksByDriverId(id));
 
-            return driverEntity;
+            return Optional.ofNullable(driverEntity);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -52,7 +53,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     }
 
     @Override
-    public List<DriverEntity> findAll() {
+    public Optional<List<DriverEntity>> findAll() {
         try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM drivers");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -61,7 +62,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
                 List<TruckEntity> trucksByDriverId = driverTruckEntityRepository.findTrucksByDriverId(driverEntity.getId());
                 driverEntity.setTrucks(trucksByDriverId);
             }
-            return driverEntities;
+            return Optional.ofNullable(driverEntities);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

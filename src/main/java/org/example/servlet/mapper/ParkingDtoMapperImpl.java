@@ -13,6 +13,8 @@ public class ParkingDtoMapperImpl {
     }
 
     public static ParkingDto entityToDto(ParkingEntity entity) {
+        if (entity==null)
+            return null;
         ParkingDto parkingDto = new ParkingDto();
         parkingDto.setId(entity.getId());
         parkingDto.setAddress(entity.getAddress());
@@ -22,6 +24,8 @@ public class ParkingDtoMapperImpl {
     }
 
     public static List<ParkingDto> entityToDto(List<ParkingEntity> entities) {
+        if (entities==null)
+            return null;
         List<ParkingDto> parkingDtos = new ArrayList<>();
         for (ParkingEntity entity : entities) {
             parkingDtos.add(entityToDto(entity));
@@ -30,6 +34,8 @@ public class ParkingDtoMapperImpl {
     }
 
     public static ParkingEntity dtoToEntity(ParkingDto dto) {
+        if (dto==null)
+            return null;
         ParkingEntity parkingEntity = new ParkingEntity();
         parkingEntity.setId(dto.getId());
         parkingEntity.setAddress(dto.getAddress());
@@ -39,6 +45,8 @@ public class ParkingDtoMapperImpl {
     }
 
     public static List<ParkingEntity> dtoToEntity(List<ParkingDto> dtos) {
+        if (dtos==null)
+            return null;
         List<ParkingEntity> parkingEntities = new ArrayList<>();
         for (ParkingDto dto : dtos) {
             parkingEntities.add(dtoToEntity(dto));

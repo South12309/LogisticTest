@@ -20,12 +20,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     private ConnectionManager manager;
     private TruckResultSetMapper truckResultSetMapper;
     private DriverTruckEntityRepository driverTruckEntityRepository;
-    private ParkingEntityRepository parkingEntityRepository = ParkingEntityRepositoryImpl.getINSTANCE();
 
     private static TruckEntityRepository INSTANCE = new TruckEntityRepositoryImpl();
 
@@ -43,22 +43,24 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     }
 
     @Override
-    public TruckEntity findById(Integer id) {
+    public Optional<TruckEntity> findById(Integer id) {
         try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks where id=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             TruckEntity truckEntity = truckResultSetMapper.mapOneResult(resultSet);
-            truckEntity.setParking(parkingEntityRepository.findById(resultSet.getInt("parking_id")));
+            ParkingEntity parking = new ParkingEntity();
+            parking.setId(resultSet.getInt("parking_id"));
+            truckEntity.setParking(parking);
             truckEntity.setDrivers(driverTruckEntityRepository.findDriversByTruckId(truckEntity.getId()));
-            return truckEntity;
+            return Optional.ofNullable(truckEntity);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<TruckEntity> findAll() {
+    public Optional<List<TruckEntity>> findAll() {
         try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM trucks");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -66,10 +68,12 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             while (resultSet.next()) {
                 TruckEntity truckEntity = truckResultSetMapper.mapOneResult(resultSet);
                 truckEntity.setDrivers(driverTruckEntityRepository.findDriversByTruckId(truckEntity.getId()));
-                truckEntity.setParking(parkingEntityRepository.findById(resultSet.getInt("parking_id")));
+                ParkingEntity parking = new ParkingEntity();
+                parking.setId(resultSet.getInt("parking_id"));
+                truckEntity.setParking(parking);
                 truckEntities.add(truckEntity);
             }
-            return truckEntities;
+            return Optional.ofNullable(truckEntities);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
