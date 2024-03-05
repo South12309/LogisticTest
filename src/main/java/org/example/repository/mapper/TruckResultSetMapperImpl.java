@@ -36,6 +36,7 @@ public class TruckResultSetMapperImpl implements TruckResultSetMapper {
         truckEntity.setNumber(resultSet.getString("number"));
         ParkingEntity parking = new ParkingEntity();
         parking.setId(resultSet.getInt("parking_id"));
+        truckEntity.setParking(parking);
         return truckEntity;
     }
 

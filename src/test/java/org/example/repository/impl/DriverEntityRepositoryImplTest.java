@@ -31,6 +31,10 @@ class DriverEntityRepositoryImplTest {
 
     @Test
     void save() {
+        DriverEntity driverEntity = new DriverEntity();
+        driverEntity.setFio("fio");
+        driverEntityRepository.save(driverEntity);
+        System.out.println(driverEntity.getId());
     }
 
     @Test

@@ -14,10 +14,7 @@ import org.example.repository.mapper.ParkingResultSetMapperImpl;
 import org.example.repository.mapper.TruckResultSetMapper;
 import org.example.repository.mapper.TruckResultSetMapperImpl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -94,14 +91,15 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     @Override
     public TruckEntity save(TruckEntity truckEntity) {
         try (Connection connection = manager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO trucks (model, number, parking_id) VALUES(?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO trucks (model, number, parking_id) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, truckEntity.getModel());
             preparedStatement.setString(2, truckEntity.getNumber());
             preparedStatement.setInt(3, truckEntity.getParking().getId());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                truckEntity.setId(generatedKeys.getInt(1));
+                int anInt = generatedKeys.getInt(1);
+                truckEntity.setId(anInt);
             } else {
                 throw new SQLException("Error insert");
             }

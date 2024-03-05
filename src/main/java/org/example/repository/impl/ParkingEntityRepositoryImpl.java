@@ -12,10 +12,7 @@ import org.example.repository.mapper.DriverResultSetMapper;
 import org.example.repository.mapper.ParkingResultSetMapper;
 import org.example.repository.mapper.ParkingResultSetMapperImpl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,7 +38,7 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
     @Override
     public Optional<ParkingEntity> findById(Integer id) {
         try (Connection connection = manager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM parkings where id=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM parkings where id=?", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             ParkingEntity parkingEntity = resultSetMapper.mapOneResult(resultSet);

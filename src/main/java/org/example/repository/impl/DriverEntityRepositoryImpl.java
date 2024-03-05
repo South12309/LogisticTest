@@ -10,10 +10,7 @@ import org.example.repository.mapper.DriverResultSetMapper;
 import org.example.repository.mapper.DriverResultSetMapperImpl;
 import org.example.repository.mapper.TruckResultSetMapper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,7 +80,7 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
     @Override
     public DriverEntity save(DriverEntity driverEntity) {
         try (Connection connection = manager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO drivers (fio) VALUES(?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO drivers (fio) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, driverEntity.getFio());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
