@@ -39,6 +39,10 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
         manager = ConnectionManagerImpl.getInstance();
     }
 
+    public void setManager(ConnectionManager manager) {
+        this.manager = manager;
+    }
+
     @Override
     public Optional<TruckEntity> findById(Integer id) {
         try (Connection connection = manager.getConnection()) {

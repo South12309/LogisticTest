@@ -36,7 +36,9 @@ public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityReposit
         truckResultSetMapper = TruckResultSetMapperImpl.getINSTANCE();
         manager = ConnectionManagerImpl.getInstance();
     }
-
+    public void setManager(ConnectionManager manager) {
+        this.manager = manager;
+    }
     @Override
     public List<TruckEntity> findTrucksByDriverId(Integer driverId) {
         try (Connection connection = manager.getConnection()) {

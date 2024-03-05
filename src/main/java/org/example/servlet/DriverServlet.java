@@ -21,13 +21,6 @@ import java.util.List;
 public class DriverServlet extends HttpServlet {
     private DriverService service;
     private ObjectMapper jsonMapper;
-//    @Override
-//    public void init() throws ServletException {
-//        super.init();
-//        service = new DriverServiceImpl();
-//        dtomapper = new DriverDtoMapperImpl();
-//        jsonMapper = new ObjectMapper();
-//    }
 
     public DriverServlet() {
         service = new DriverServiceImpl();
@@ -41,12 +34,10 @@ public class DriverServlet extends HttpServlet {
             List<DriverDto> result = DriverDtoMapperImpl.entityToDto(service.findAll());
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(jsonMapper.writeValueAsString(result));
-            //System.out.println(jsonMapper.writeValueAsString(result));
         } else {
             DriverDto result = DriverDtoMapperImpl.entityToDto(service.findById(Integer.parseInt(id)));
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(jsonMapper.writeValueAsString(result));
-            //System.out.println(jsonMapper.writeValueAsString(result));
         }
 
     }

@@ -33,6 +33,10 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
         manager = ConnectionManagerImpl.getInstance();
     }
 
+    public void setManager(ConnectionManager manager) {
+        this.manager = manager;
+    }
+
     @Override
     public Optional<DriverEntity> findById(Integer id) {
         try (Connection connection = manager.getConnection()) {

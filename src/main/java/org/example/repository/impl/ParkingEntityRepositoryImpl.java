@@ -34,6 +34,9 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
         truckEntityRepository = TruckEntityRepositoryImpl.getINSTANCE();
         manager = ConnectionManagerImpl.getInstance();
     }
+    public void setManager(ConnectionManager manager) {
+        this.manager = manager;
+    }
 
     @Override
     public Optional<ParkingEntity> findById(Integer id) {
