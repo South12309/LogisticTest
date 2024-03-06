@@ -41,7 +41,7 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
     @Override
     public Optional<ParkingEntity> findById(Integer id) {
         try (Connection connection = manager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM parkings where id=?", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM logistic.parkings where id=?", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             ParkingEntity parkingEntity = resultSetMapper.mapOneResult(resultSet);
@@ -54,7 +54,7 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
     @Override
     public Optional<List<ParkingEntity>> findAll() {
         try (Connection connection = manager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM parkings");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM logistic.parkings");
             ResultSet resultSet = preparedStatement.executeQuery();
             List<ParkingEntity> parkingEntities = resultSetMapper.mapListResult(resultSet);
             for (ParkingEntity parkingEntity : parkingEntities) {
@@ -69,7 +69,7 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
     @Override
     public boolean deleteById(Integer id) {
         try (Connection connection = manager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM parkings where id=?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM logistic.parkings where id=?");
             preparedStatement.setInt(1, id);
             int result = preparedStatement.executeUpdate();
             return result > 0;
@@ -81,7 +81,7 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
     @Override
     public ParkingEntity save(ParkingEntity parkingEntity) {
         try (Connection connection = manager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO parkings (address, square) VALUES(?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO logistic.parkings (address, square) VALUES(?, ?)");
             preparedStatement.setString(1, parkingEntity.getAddress());
             preparedStatement.setInt(2, parkingEntity.getSquare());
             preparedStatement.executeUpdate();
@@ -101,7 +101,7 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
         try (Connection connection = manager.getConnection()) {
             PreparedStatement preparedStatement =
                     connection.prepareStatement(
-                            "UPDATE parkings SET address = ?, square = ? WHERE id = ?");
+                            "UPDATE logistic.parkings SET address = ?, square = ? WHERE id = ?");
             preparedStatement.setObject(1, parkingEntity.getAddress());
             preparedStatement.setObject(2,parkingEntity.getSquare());
             preparedStatement.setObject(3,parkingEntity.getId());

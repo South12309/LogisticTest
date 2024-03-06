@@ -4,15 +4,19 @@ import java.util.List;
 
 public class DriverEntity {
     private int id;
-    private String fio;
+    private String surname;
+    private String name;
+    private String patronymic;
     private List<TruckEntity> trucks;
 
     public DriverEntity() {
     }
 
-    public DriverEntity(int id, String fio, List<TruckEntity> trucks) {
+    public DriverEntity(int id, String surname, String name, String patronymic, List<TruckEntity> trucks) {
         this.id = id;
-        this.fio = fio;
+        this.surname = surname;
+        this.name = name;
+        this.patronymic = patronymic;
         this.trucks = trucks;
     }
 
@@ -24,12 +28,28 @@ public class DriverEntity {
         this.id = id;
     }
 
-    public String getFio() {
-        return fio;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setFio(String fio) {
-        this.fio = fio;
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
     }
 
     public List<TruckEntity> getTrucks() {

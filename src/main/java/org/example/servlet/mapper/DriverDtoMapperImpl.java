@@ -16,7 +16,9 @@ public class DriverDtoMapperImpl {
             return null;
         DriverDto driverDto = new DriverDto();
         driverDto.setId(entity.getId());
-        driverDto.setFio(entity.getFio());
+        driverDto.setSurname(entity.getSurname());
+        driverDto.setName(entity.getName());
+        driverDto.setPatronymic(entity.getPatronymic());
         driverDto.setTrucks(TruckDtoMapperImpl.entityToDto(entity.getTrucks()));
         return driverDto;
     }
@@ -36,7 +38,9 @@ public class DriverDtoMapperImpl {
             return null;
         DriverEntity driverEntity = new DriverEntity();
         driverEntity.setId(dto.getId());
-        driverEntity.setFio(dto.getFio());
+        driverEntity.setSurname(dto.getSurname());
+        driverEntity.setName(dto.getName());
+        driverEntity.setPatronymic(dto.getPatronymic());
         driverEntity.setTrucks(TruckDtoMapperImpl.dtoToEntity(dto.getTrucks()));
         return driverEntity;
     }

@@ -37,7 +37,9 @@ public class DriverResultSetMapperImpl implements DriverResultSetMapper {
         }
         DriverEntity driverEntity = new DriverEntity();
         driverEntity.setId(resultSet.getInt("id"));
-        driverEntity.setFio(resultSet.getString("fio"));
+        driverEntity.setSurname(resultSet.getString("surname"));
+        driverEntity.setName(resultSet.getString("name"));
+        driverEntity.setPatronymic(resultSet.getString("patronymic"));
         return driverEntity;
     }
 }
