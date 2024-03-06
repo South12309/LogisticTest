@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TruckEntityRepositoryImpl implements TruckEntityRepository {
+    private static final int DEFAULT_PARKING_ID = 1;
     private ConnectionManager manager;
     private TruckResultSetMapper truckResultSetMapper;
     private DriverTruckEntityRepository driverTruckEntityRepository;
@@ -101,7 +102,8 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO logistic.trucks (model, number, parking_id) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, truckEntity.getModel());
             preparedStatement.setString(2, truckEntity.getNumber());
-            preparedStatement.setInt(3, truckEntity.getParking().getId());
+            ParkingEntity parking = truckEntity.getParking();
+            preparedStatement.setInt(3, parking==null?DEFAULT_PARKING_ID: parking.getId());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -124,10 +126,11 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
                             "UPDATE logistic.trucks SET model = ?, number=?, parking_id=? WHERE id = ?");
             preparedStatement.setObject(1, truckEntity.getModel());
             preparedStatement.setObject(2, truckEntity.getNumber());
-            preparedStatement.setObject(3, truckEntity.getParking().getId());
+            ParkingEntity parking = truckEntity.getParking();
+            preparedStatement.setObject(3, parking==null?DEFAULT_PARKING_ID:parking.getId());
             preparedStatement.setObject(4, truckEntity.getId());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return truckResultSetMapper.mapOneResult(resultSet);
+            preparedStatement.executeUpdate();
+            return truckEntity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

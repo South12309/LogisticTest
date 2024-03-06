@@ -20,7 +20,10 @@ public class ParkingServiceImpl implements ParkingService {
     }
     @Override
     public ParkingEntity save(ParkingEntity parkingEntity) {
-        return repository.save(parkingEntity);
+        if (repository.findById(parkingEntity.getId()).isEmpty()) {
+            return repository.save(parkingEntity);
+        }
+        return repository.update(parkingEntity);
     }
 
     @Override

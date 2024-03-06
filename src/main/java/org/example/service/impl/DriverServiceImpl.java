@@ -16,7 +16,10 @@ public class DriverServiceImpl implements DriverService {
     }
     @Override
     public DriverEntity save(DriverEntity driverEntity) {
-        return repository.save(driverEntity);
+        if (repository.findById(driverEntity.getId()).isEmpty()) {
+            return repository.save(driverEntity);
+        }
+        return repository.update(driverEntity);
     }
 
     @Override

@@ -111,8 +111,8 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
             preparedStatement.setString(2, driverEntity.getName());
             preparedStatement.setString(3, driverEntity.getPatronymic());
             preparedStatement.setObject(4, driverEntity.getId());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return driverResultSetMapper.mapOneResult(resultSet);
+            preparedStatement.executeUpdate();
+            return driverEntity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

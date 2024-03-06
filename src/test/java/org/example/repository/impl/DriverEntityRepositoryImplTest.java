@@ -16,7 +16,7 @@ class DriverEntityRepositoryImplTest {
     @Test
     void findById() {
         DriverEntity byId = driverEntityRepository.findById(1).get();
-        System.out.println(byId.getFio());
+      //  System.out.println(byId.getFio());
         System.out.println(byId.getId());
         System.out.println(byId.getTrucks());
     }
@@ -32,7 +32,7 @@ class DriverEntityRepositoryImplTest {
     @Test
     void save() {
         DriverEntity driverEntity = new DriverEntity();
-        driverEntity.setFio("fio");
+      //  driverEntity.setFio("fio");
         driverEntityRepository.save(driverEntity);
         System.out.println(driverEntity.getId());
     }

@@ -105,8 +105,8 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
             preparedStatement.setObject(1, parkingEntity.getAddress());
             preparedStatement.setObject(2,parkingEntity.getSquare());
             preparedStatement.setObject(3,parkingEntity.getId());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSetMapper.mapOneResult(resultSet);
+            preparedStatement.executeUpdate();
+            return parkingEntity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

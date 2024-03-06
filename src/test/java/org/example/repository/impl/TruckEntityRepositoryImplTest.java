@@ -3,6 +3,7 @@ package org.example.repository.impl;
 import org.example.db.ConnectionManager;
 import org.example.db.ConnectionManagerImpl;
 import org.example.db.PropertiesUtil;
+import org.example.model.ParkingEntity;
 import org.example.model.TruckEntity;
 import org.example.repository.TruckEntityRepository;
 import org.junit.jupiter.api.AfterAll;
@@ -75,20 +76,39 @@ class TruckEntityRepositoryImplTest {
     }
 
     @Test
-    void deleteById() {
-        assertTrue(repository.deleteById(1));
-        assertTrue(!repository.deleteById(1));
-    }
-
-    @Test
     void save() {
+        TruckEntity truckEntity = new TruckEntity();
+        truckEntity.setModel("kamaz");
+        truckEntity.setNumber("A001AA09");
+        TruckEntity save = repository.save(truckEntity);
+        assertEquals(save.getNumber(), truckEntity.getNumber());
+        assertEquals(save.getModel(), truckEntity.getModel());
+        assertEquals(4, save.getId());
     }
 
     @Test
     void update() {
+        TruckEntity truckEntityTest = new TruckEntity();
+        truckEntityTest.setId(1);
+        truckEntityTest.setModel("kamaz");
+        truckEntityTest.setNumber("A001AA09");
+        TruckEntity truckEntityFromDB = repository.findById(1).get();
+        assertNotEquals(truckEntityTest.getModel(), truckEntityFromDB.getModel());
+        TruckEntity save = repository.update(truckEntityTest);
+        assertEquals(save.getNumber(), truckEntityTest.getNumber());
+        assertEquals(save.getModel(), truckEntityTest.getModel());
+        assertEquals(1, save.getId());
     }
 
     @Test
     void findByParkingId() {
+        List<TruckEntity> byParkingId = repository.findByParkingId(1);
+        assertEquals(1, byParkingId.size());
+
+    }
+    @Test
+    void deleteById() {
+        assertTrue(repository.deleteById(1));
+        assertTrue(!repository.deleteById(1));
     }
 }
