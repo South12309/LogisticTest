@@ -34,9 +34,10 @@ class DriverEntityRepositoryImplTest {
         testProperties.put("jdbcUrl", CONTAINER.getJdbcUrl());
         testProperties.put("username", CONTAINER.getUsername());
         testProperties.put("password", CONTAINER.getPassword());
-        MockedStatic<PropertiesUtil> propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class);
-        propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
-        connectionManager = ConnectionManagerImpl.getInstance();
+        try (MockedStatic<PropertiesUtil> propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class)) {
+            propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
+            connectionManager = ConnectionManagerImpl.getInstance();
+        }
         repository = DriverEntityRepositoryImpl.getINSTANCE();
         repository.setManager(connectionManager);
     }

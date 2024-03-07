@@ -81,7 +81,7 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
     @Override
     public ParkingEntity save(ParkingEntity parkingEntity) {
         try (Connection connection = manager.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO logistic.parkings (address, square) VALUES(?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO logistic.parkings (address, square) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, parkingEntity.getAddress());
             preparedStatement.setInt(2, parkingEntity.getSquare());
             preparedStatement.executeUpdate();
