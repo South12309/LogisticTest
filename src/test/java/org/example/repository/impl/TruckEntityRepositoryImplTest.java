@@ -15,6 +15,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -62,10 +63,11 @@ class TruckEntityRepositoryImplTest {
         assertTrue(!truckEntityById.isEmpty());
         assertEquals(1, truckEntityById.get().getId());
         assertEquals("MAN", truckEntityById.get().getModel());
+
     }
     @Test
     void findByIdIsNotPresent() {
-        Optional<TruckEntity> truckEntityById = repository.findById(4);
+        Optional<TruckEntity> truckEntityById = repository.findById(40);
         assertTrue(truckEntityById.isEmpty());
     }
 
@@ -89,7 +91,7 @@ class TruckEntityRepositoryImplTest {
     @Test
     void update() {
         TruckEntity truckEntityTest = new TruckEntity();
-        truckEntityTest.setId(1);
+        truckEntityTest.setId(2);
         truckEntityTest.setModel("kamaz");
         truckEntityTest.setNumber("A001AA09");
         TruckEntity truckEntityFromDB = repository.findById(1).get();
@@ -97,7 +99,7 @@ class TruckEntityRepositoryImplTest {
         TruckEntity save = repository.update(truckEntityTest);
         assertEquals(save.getNumber(), truckEntityTest.getNumber());
         assertEquals(save.getModel(), truckEntityTest.getModel());
-        assertEquals(1, save.getId());
+        assertEquals(2, save.getId());
     }
 
     @Test
