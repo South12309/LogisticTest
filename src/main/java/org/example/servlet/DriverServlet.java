@@ -49,6 +49,10 @@ public class DriverServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        saveDto(req, resp);
+    }
+
+    public void saveDto(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         StringBuilder requestBody = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
@@ -63,16 +67,7 @@ public class DriverServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        StringBuilder requestBody = new StringBuilder();
-        BufferedReader reader = req.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            requestBody.append(line);
-        }
-        DriverDto driverDTO = jsonMapper.readValue(requestBody.toString(), DriverDto.class);
-        DriverDto updatedDto = DriverDtoMapperImpl.entityToDto(service.save(DriverDtoMapperImpl.dtoToEntity(driverDTO)));
-        resp.setStatus(HttpServletResponse.SC_OK);
-        resp.getWriter().write(jsonMapper.writeValueAsString(updatedDto));
+        saveDto(req, resp);
     }
 
     @Override
