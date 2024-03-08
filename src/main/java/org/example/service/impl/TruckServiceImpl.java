@@ -15,6 +15,10 @@ public class TruckServiceImpl implements TruckService {
         repository = TruckEntityRepositoryImpl.getINSTANCE();
     }
 
+    public TruckServiceImpl(TruckEntityRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public TruckEntity save(TruckEntity truckEntity) {
         if (repository.findById(truckEntity.getId()).isEmpty()) {

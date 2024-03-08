@@ -18,6 +18,11 @@ public class ParkingServiceImpl implements ParkingService {
     public ParkingServiceImpl() {
         repository = ParkingEntityRepositoryImpl.getINSTANCE();
     }
+
+    public ParkingServiceImpl(ParkingEntityRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public ParkingEntity save(ParkingEntity parkingEntity) {
         if (repository.findById(parkingEntity.getId()).isEmpty()) {
