@@ -26,6 +26,11 @@ public class ParkingServlet extends HttpServlet {
         jsonMapper = new ObjectMapper();
     }
 
+    public ParkingServlet(ParkingService service) {
+        this.service = service;
+        jsonMapper = new ObjectMapper();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
@@ -44,6 +49,10 @@ public class ParkingServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        saveDto(req, resp);
+    }
+
+    private void saveDto(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         StringBuilder requestBody = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
@@ -55,18 +64,10 @@ public class ParkingServlet extends HttpServlet {
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.getWriter().write(jsonMapper.writeValueAsString(saveDto));
     }
+
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        StringBuilder requestBody = new StringBuilder();
-        BufferedReader reader = req.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            requestBody.append(line);
-        }
-        ParkingDto parkingDto = jsonMapper.readValue(requestBody.toString(), ParkingDto.class);
-        ParkingDto updatedDto = ParkingDtoMapperImpl.entityToDto(service.save(ParkingDtoMapperImpl.dtoToEntity(parkingDto)));
-        resp.setStatus(HttpServletResponse.SC_OK);
-        resp.getWriter().write(jsonMapper.writeValueAsString(updatedDto));
+        saveDto(req, resp);
     }
 
     @Override
