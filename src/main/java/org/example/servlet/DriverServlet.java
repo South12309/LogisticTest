@@ -27,6 +27,11 @@ public class DriverServlet extends HttpServlet {
         jsonMapper = new ObjectMapper();
     }
 
+    public DriverServlet(DriverService service) {
+        this.service = service;
+        jsonMapper = new ObjectMapper();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
