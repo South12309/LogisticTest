@@ -14,6 +14,11 @@ public class DriverServiceImpl implements DriverService {
     public DriverServiceImpl() {
         repository = DriverEntityRepositoryImpl.getINSTANCE();
     }
+
+    public DriverServiceImpl(DriverEntityRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public DriverEntity save(DriverEntity driverEntity) {
         if (repository.findById(driverEntity.getId()).isEmpty()) {
