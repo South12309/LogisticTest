@@ -18,10 +18,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityRepository {
-    private ConnectionManager manager;
     private DriverResultSetMapper driverResultSetMapper;
     private TruckResultSetMapper truckResultSetMapper;
-    private static DriverTruckEntityRepository INSTANCE = new DriverTruckEntityRepositoryImpl();
+    private static DriverTruckEntityRepository INSTANCE;
 
     public static DriverTruckEntityRepository getINSTANCE() {
         if (INSTANCE==null) {
@@ -34,14 +33,12 @@ public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityReposit
     private DriverTruckEntityRepositoryImpl() {
         driverResultSetMapper = DriverResultSetMapperImpl.getINSTANCE();
         truckResultSetMapper = TruckResultSetMapperImpl.getINSTANCE();
-        manager = ConnectionManagerImpl.getInstance();
+
     }
-    public void setManager(ConnectionManager manager) {
-        this.manager = manager;
-    }
+
     @Override
     public List<TruckEntity> findTrucksByDriverId(Integer driverId) {
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = ConnectionManagerImpl.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("SELECT * FROM logistic.trucks where id in " +
                             "(SELECT truck_id from logistic.drivers_trucks where driver_id=?)");
@@ -56,7 +53,7 @@ public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityReposit
 
     @Override
     public List<DriverEntity> findDriversByTruckId(Integer truckId) {
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = ConnectionManagerImpl.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("SELECT * FROM logistic.drivers where id in " +
                             "(SELECT driver_id from logistic.drivers_trucks where truck_id=?)");

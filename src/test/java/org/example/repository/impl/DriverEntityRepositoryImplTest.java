@@ -6,6 +6,7 @@ import org.example.db.PropertiesUtil;
 import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
 import org.example.repository.DriverEntityRepository;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -19,6 +20,7 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
+
 @Testcontainers
 class DriverEntityRepositoryImplTest {
     private static DriverEntityRepository repository;
@@ -30,6 +32,7 @@ class DriverEntityRepositoryImplTest {
 
     @BeforeAll
     static void beforeAll() {
+
         Properties testProperties = new Properties();
         testProperties.put("jdbcUrl", CONTAINER.getJdbcUrl());
         testProperties.put("username", CONTAINER.getUsername());
@@ -37,9 +40,13 @@ class DriverEntityRepositoryImplTest {
         try (MockedStatic<PropertiesUtil> propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class)) {
             propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
             connectionManager = ConnectionManagerImpl.getInstance();
+            repository = DriverEntityRepositoryImpl.getINSTANCE();
         }
-        repository = DriverEntityRepositoryImpl.getINSTANCE();
-        repository.setManager(connectionManager);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        connectionManager.close();
     }
 
     @Test
@@ -90,6 +97,7 @@ class DriverEntityRepositoryImplTest {
         assertEquals(save.getPatronymic(), driverEntityTest.getPatronymic());
         assertEquals(2, save.getId());
     }
+
     @Test
     void deleteById() {
         assertTrue(repository.deleteById(1));

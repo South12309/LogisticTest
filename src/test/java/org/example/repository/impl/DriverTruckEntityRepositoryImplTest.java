@@ -7,6 +7,7 @@ import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
 import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -19,6 +20,7 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
+
 @Testcontainers
 class DriverTruckEntityRepositoryImplTest {
     private static DriverTruckEntityRepository repository;
@@ -37,11 +39,13 @@ class DriverTruckEntityRepositoryImplTest {
         try (MockedStatic<PropertiesUtil> propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class)) {
             propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
             connectionManager = ConnectionManagerImpl.getInstance();
+            repository = DriverTruckEntityRepositoryImpl.getINSTANCE();
         }
-        repository = DriverTruckEntityRepositoryImpl.getINSTANCE();
-        repository.setManager(connectionManager);
     }
-
+    @AfterAll
+    static void afterAll() {
+        connectionManager.close();
+    }
     @Test
     void getINSTANCE() {
     }

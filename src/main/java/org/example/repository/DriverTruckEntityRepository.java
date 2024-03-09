@@ -10,6 +10,5 @@ import java.util.List;
 public interface DriverTruckEntityRepository { //extends Repository<DriverTruckEntity, Integer> {
     List<TruckEntity> findTrucksByDriverId(Integer driverId);
     List<DriverEntity> findDriversByTruckId(Integer truckId);
-    void setManager(ConnectionManager manager);
 }
 

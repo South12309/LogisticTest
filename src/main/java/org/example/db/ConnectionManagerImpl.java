@@ -5,10 +5,13 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public class ConnectionManagerImpl implements ConnectionManager {
     private static ConnectionManagerImpl INSTANCE;
-    private final HikariDataSource hikariCP;
+    private HikariDataSource hikariCP;
 
     static {
         loadDriver();
@@ -51,6 +54,5 @@ public class ConnectionManagerImpl implements ConnectionManager {
     @Override
     public void close() {
         INSTANCE = null;
-
     }
 }

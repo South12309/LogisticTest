@@ -21,11 +21,10 @@ import java.util.Optional;
 
 public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     private static final int DEFAULT_PARKING_ID = 1;
-    private ConnectionManager manager;
     private TruckResultSetMapper truckResultSetMapper;
     private DriverTruckEntityRepository driverTruckEntityRepository;
 
-    private static TruckEntityRepository INSTANCE = new TruckEntityRepositoryImpl();
+    private static TruckEntityRepository INSTANCE;
 
     public static TruckEntityRepository getINSTANCE() {
         if (INSTANCE == null) {
@@ -37,16 +36,12 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     private TruckEntityRepositoryImpl() {
         truckResultSetMapper = TruckResultSetMapperImpl.getINSTANCE();
         driverTruckEntityRepository = DriverTruckEntityRepositoryImpl.getINSTANCE();
-        manager = ConnectionManagerImpl.getInstance();
     }
 
-    public void setManager(ConnectionManager manager) {
-        this.manager = manager;
-    }
 
     @Override
     public Optional<TruckEntity> findById(Integer id) {
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = ConnectionManagerImpl.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM logistic.trucks where id=?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -66,7 +61,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public Optional<List<TruckEntity>> findAll() {
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = ConnectionManagerImpl.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM logistic.trucks");
             ResultSet resultSet = preparedStatement.executeQuery();
             List<TruckEntity> truckEntities = new ArrayList<>();
@@ -86,7 +81,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public boolean deleteById(Integer id) {
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = ConnectionManagerImpl.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM logistic.trucks where id=?");
             preparedStatement.setInt(1, id);
             int result = preparedStatement.executeUpdate();
@@ -98,7 +93,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public TruckEntity save(TruckEntity truckEntity) {
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = ConnectionManagerImpl.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO logistic.trucks (model, number, parking_id) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, truckEntity.getModel());
             preparedStatement.setString(2, truckEntity.getNumber());
@@ -120,7 +115,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public TruckEntity update(TruckEntity truckEntity) {
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = ConnectionManagerImpl.getInstance().getConnection()) {
             PreparedStatement preparedStatement =
                     connection.prepareStatement(
                             "UPDATE logistic.trucks SET model = ?, number=?, parking_id=? WHERE id = ?");
@@ -138,7 +133,7 @@ public class TruckEntityRepositoryImpl implements TruckEntityRepository {
 
     @Override
     public List<TruckEntity> findByParkingId(Integer parkingId) {
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = ConnectionManagerImpl.getInstance().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM logistic.trucks where parking_id=?");
             preparedStatement.setInt(1, parkingId);
             ResultSet resultSet = preparedStatement.executeQuery();

@@ -16,5 +16,4 @@ public interface Repository<T, K> {
 
     T save(T t);
     T update(T t);
-    void setManager(ConnectionManager manager);
 }
