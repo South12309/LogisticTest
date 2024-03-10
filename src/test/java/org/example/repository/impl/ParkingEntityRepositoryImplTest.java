@@ -26,6 +26,7 @@ import static org.mockito.Mockito.mockStatic;
 class ParkingEntityRepositoryImplTest {
     private static ParkingEntityRepository repository;
     private static ConnectionManager connectionManager;
+    private static MockedStatic<PropertiesUtil> propertiesUtilMockedStatic;
     @Container
     static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:16")
             .withDatabaseName("logistic")
@@ -37,62 +38,61 @@ class ParkingEntityRepositoryImplTest {
         testProperties.put("jdbcUrl", CONTAINER.getJdbcUrl());
         testProperties.put("username", CONTAINER.getUsername());
         testProperties.put("password", CONTAINER.getPassword());
-        try (MockedStatic<PropertiesUtil> propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class)) {
-            propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
-            connectionManager = ConnectionManagerImpl.getInstance();
-            repository = ParkingEntityRepositoryImpl.getINSTANCE();
-        }
-    }
-    @AfterAll
-    static void afterAll() {
-        connectionManager.close();
-    }
-    @Test
-    void getINSTANCE() {
+        propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class);
+        propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
+        connectionManager = ConnectionManagerImpl.getInstance();
+        repository = ParkingEntityRepositoryImpl.getINSTANCE();
     }
 
-    @Test
-    void findById() {
-        Optional<ParkingEntity> parkingEntity = repository.findById(1);
-        assertTrue(!parkingEntity.isEmpty());
-        assertEquals(1, parkingEntity.get().getId());
-        assertEquals("cherkessk", parkingEntity.get().getAddress());
-    }
 
-    @Test
-    void findAll() {
-        Optional<List<ParkingEntity>> all = repository.findAll();
-        assertEquals(3, all.get().size());
-    }
+@AfterAll
+static void afterAll() {
+    connectionManager.close();
+    propertiesUtilMockedStatic.close();
+}
 
-    @Test
-    void deleteById() {
-        assertTrue(repository.deleteById(1));
-        assertTrue(!repository.deleteById(1));
-    }
+@Test
+void findById() {
+    Optional<ParkingEntity> parkingEntity = repository.findById(1);
+    assertTrue(!parkingEntity.isEmpty());
+    assertEquals(1, parkingEntity.get().getId());
+    assertEquals("cherkessk", parkingEntity.get().getAddress());
+}
 
-    @Test
-    void save() {
-        ParkingEntity parkingEntity = new ParkingEntity();
-        parkingEntity.setAddress("Stavropol1");
-        parkingEntity.setSquare(30);
-        ParkingEntity save = repository.save(parkingEntity);
-        assertEquals(save.getAddress(), parkingEntity.getAddress());
-        assertEquals(save.getSquare(), parkingEntity.getSquare());
-        assertEquals(4, save.getId());
-    }
+@Test
+void findAll() {
+    Optional<List<ParkingEntity>> all = repository.findAll();
+    assertEquals(3, all.get().size());
+}
 
-    @Test
-    void update() {
-        ParkingEntity parkingEntityTest = new ParkingEntity();
-        parkingEntityTest.setId(2);
-        parkingEntityTest.setAddress("Kislovodsk");
-        parkingEntityTest.setSquare(50);
-        ParkingEntity driverEntityFromDB = repository.findById(1).get();
-        assertNotEquals(parkingEntityTest.getAddress(), driverEntityFromDB.getAddress());
-        ParkingEntity save = repository.update(parkingEntityTest);
-        assertEquals(save.getAddress(), parkingEntityTest.getAddress());
-        assertEquals(save.getSquare(), parkingEntityTest.getSquare());
-        assertEquals(2, save.getId());
-    }
+@Test
+void deleteById() {
+    assertTrue(repository.deleteById(1));
+    assertTrue(!repository.deleteById(1));
+}
+
+@Test
+void save() {
+    ParkingEntity parkingEntity = new ParkingEntity();
+    parkingEntity.setAddress("Stavropol1");
+    parkingEntity.setSquare(30);
+    ParkingEntity save = repository.save(parkingEntity);
+    assertEquals(save.getAddress(), parkingEntity.getAddress());
+    assertEquals(save.getSquare(), parkingEntity.getSquare());
+    assertEquals(4, save.getId());
+}
+
+@Test
+void update() {
+    ParkingEntity parkingEntityTest = new ParkingEntity();
+    parkingEntityTest.setId(2);
+    parkingEntityTest.setAddress("Kislovodsk");
+    parkingEntityTest.setSquare(50);
+    ParkingEntity driverEntityFromDB = repository.findById(1).get();
+    assertNotEquals(parkingEntityTest.getAddress(), driverEntityFromDB.getAddress());
+    ParkingEntity save = repository.update(parkingEntityTest);
+    assertEquals(save.getAddress(), parkingEntityTest.getAddress());
+    assertEquals(save.getSquare(), parkingEntityTest.getSquare());
+    assertEquals(2, save.getId());
+}
 }

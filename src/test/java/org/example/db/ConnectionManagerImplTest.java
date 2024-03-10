@@ -14,27 +14,32 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
+
 @Testcontainers
 class ConnectionManagerImplTest {
     private static ConnectionManager connectionManager;
+    private static MockedStatic<PropertiesUtil> propertiesUtilMockedStatic;
     @Container
     static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:16")
             .withDatabaseName("logistic")
             .withInitScript("db/migration/V1__init.sql");
+
     @BeforeAll
     static void beforeAll() throws SQLException {
         Properties testProperties = new Properties();
         testProperties.put("jdbcUrl", CONTAINER.getJdbcUrl());
         testProperties.put("username", CONTAINER.getUsername());
         testProperties.put("password", CONTAINER.getPassword());
-        try (MockedStatic<PropertiesUtil> propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class)) {
-            propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
-            connectionManager = ConnectionManagerImpl.getInstance();
-        }
+        propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class);
+        propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
+        connectionManager = ConnectionManagerImpl.getInstance();
+
     }
 
     @AfterAll
     static void afterAll() throws SQLException {
+        connectionManager.close();
+        propertiesUtilMockedStatic.close();
 
     }
 

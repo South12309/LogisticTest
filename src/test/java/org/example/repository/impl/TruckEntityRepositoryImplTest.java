@@ -24,6 +24,7 @@ import static org.mockito.Mockito.mockStatic;
 class TruckEntityRepositoryImplTest {
     private static TruckEntityRepository repository;
     private static ConnectionManager connectionManager;
+    private static MockedStatic<PropertiesUtil> propertiesUtilMockedStatic;
     @Container
     static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:16")
             .withDatabaseName("postgres")
@@ -35,15 +36,17 @@ class TruckEntityRepositoryImplTest {
         testProperties.put("jdbcUrl", CONTAINER.getJdbcUrl());
         testProperties.put("username", CONTAINER.getUsername());
         testProperties.put("password", CONTAINER.getPassword());
-        try (MockedStatic<PropertiesUtil> propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class)) {
-            propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
-            connectionManager = ConnectionManagerImpl.getInstance();
-            repository = TruckEntityRepositoryImpl.getINSTANCE();
-        }
+        propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class);
+        propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
+        connectionManager = ConnectionManagerImpl.getInstance();
+        repository = TruckEntityRepositoryImpl.getINSTANCE();
+
     }
 
-    @Test
-    void getINSTANCE() {
+    @AfterAll
+    static void afterAll() {
+        connectionManager.close();
+        propertiesUtilMockedStatic.close();
     }
 
     @Test
@@ -66,10 +69,7 @@ class TruckEntityRepositoryImplTest {
         Optional<List<TruckEntity>> all = repository.findAll();
         assertEquals(3, all.get().size());
     }
-    @AfterAll
-    static void afterAll() {
-        connectionManager.close();
-    }
+
     @Test
     void save() {
         TruckEntity truckEntity = new TruckEntity();

@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mockStatic;
 class DriverEntityRepositoryImplTest {
     private static DriverEntityRepository repository;
     private static ConnectionManager connectionManager;
+    private static MockedStatic<PropertiesUtil> propertiesUtilMockedStatic;
     @Container
     static final PostgreSQLContainer<?> CONTAINER = new PostgreSQLContainer<>("postgres:16")
             .withDatabaseName("logistic")
@@ -37,20 +38,17 @@ class DriverEntityRepositoryImplTest {
         testProperties.put("jdbcUrl", CONTAINER.getJdbcUrl());
         testProperties.put("username", CONTAINER.getUsername());
         testProperties.put("password", CONTAINER.getPassword());
-        try (MockedStatic<PropertiesUtil> propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class)) {
-            propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
-            connectionManager = ConnectionManagerImpl.getInstance();
-            repository = DriverEntityRepositoryImpl.getINSTANCE();
-        }
+        propertiesUtilMockedStatic = mockStatic(PropertiesUtil.class);
+        propertiesUtilMockedStatic.when(PropertiesUtil::getProperties).thenReturn(testProperties);
+        connectionManager = ConnectionManagerImpl.getInstance();
+        repository = DriverEntityRepositoryImpl.getINSTANCE();
+
     }
 
     @AfterAll
     static void afterAll() {
         connectionManager.close();
-    }
-
-    @Test
-    void getINSTANCE() {
+        propertiesUtilMockedStatic.close();
     }
 
     @Test
