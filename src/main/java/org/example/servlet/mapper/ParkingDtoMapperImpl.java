@@ -1,8 +1,6 @@
 package org.example.servlet.mapper;
 
-import org.example.model.DriverEntity;
 import org.example.model.ParkingEntity;
-import org.example.servlet.dto.DriverDto;
 import org.example.servlet.dto.ParkingDto;
 
 import java.util.ArrayList;
@@ -25,7 +23,7 @@ public class ParkingDtoMapperImpl {
 
     public static List<ParkingDto> entityToDto(List<ParkingEntity> entities) {
         if (entities==null)
-            return null;
+            return new ArrayList<>();
         List<ParkingDto> parkingDtos = new ArrayList<>();
         for (ParkingEntity entity : entities) {
             parkingDtos.add(entityToDto(entity));
@@ -46,7 +44,7 @@ public class ParkingDtoMapperImpl {
 
     public static List<ParkingEntity> dtoToEntity(List<ParkingDto> dtos) {
         if (dtos==null)
-            return null;
+            return new ArrayList<>();
         List<ParkingEntity> parkingEntities = new ArrayList<>();
         for (ParkingDto dto : dtos) {
             parkingEntities.add(dtoToEntity(dto));

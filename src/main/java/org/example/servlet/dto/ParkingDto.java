@@ -1,7 +1,5 @@
 package org.example.servlet.dto;
 
-import org.example.model.TruckEntity;
-
 import java.util.List;
 
 public class ParkingDto {

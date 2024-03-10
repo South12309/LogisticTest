@@ -4,9 +4,7 @@ import org.example.model.DriverEntity;
 import org.example.repository.DriverEntityRepository;
 import org.example.repository.impl.DriverEntityRepositoryImpl;
 import org.example.service.DriverService;
-
 import java.util.List;
-import java.util.UUID;
 
 public class DriverServiceImpl implements DriverService {
     private final DriverEntityRepository repository;
@@ -29,7 +27,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverEntity findById(Integer id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -39,6 +37,6 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public List<DriverEntity> findAll() {
-        return repository.findAll().get();
+        return repository.findAll().orElse(null);
     }
 }

@@ -1,8 +1,6 @@
 package org.example.repository.mapper;
 
 import org.example.model.DriverEntity;
-import org.example.repository.TruckEntityRepository;
-import org.example.repository.impl.TruckEntityRepositoryImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

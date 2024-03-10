@@ -1,11 +1,7 @@
 package org.example.repository.mapper;
 
-import org.example.model.DriverEntity;
 import org.example.model.ParkingEntity;
 import org.example.model.TruckEntity;
-import org.example.repository.ParkingEntityRepository;
-import org.example.repository.impl.ParkingEntityRepositoryImpl;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

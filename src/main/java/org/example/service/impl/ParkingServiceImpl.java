@@ -1,16 +1,10 @@
 package org.example.service.impl;
 
-import org.example.model.DriverEntity;
 import org.example.model.ParkingEntity;
-import org.example.repository.DriverEntityRepository;
 import org.example.repository.ParkingEntityRepository;
-import org.example.repository.impl.DriverEntityRepositoryImpl;
 import org.example.repository.impl.ParkingEntityRepositoryImpl;
-import org.example.service.DriverService;
 import org.example.service.ParkingService;
-
 import java.util.List;
-import java.util.UUID;
 
 public class ParkingServiceImpl implements ParkingService {
     private final ParkingEntityRepository repository;
@@ -33,7 +27,7 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public ParkingEntity findById(Integer id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -43,6 +37,6 @@ public class ParkingServiceImpl implements ParkingService {
 
     @Override
     public List<ParkingEntity> findAll() {
-        return repository.findAll().get();
+        return repository.findAll().orElse(null);
     }
 }

@@ -1,6 +1,5 @@
 package org.example.repository.impl;
 
-import org.example.db.ConnectionManager;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
@@ -8,15 +7,14 @@ import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
 import org.example.repository.mapper.DriverResultSetMapper;
 import org.example.repository.mapper.DriverResultSetMapperImpl;
-import org.example.repository.mapper.TruckResultSetMapper;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
 public class DriverEntityRepositoryImpl implements DriverEntityRepository {
-    private DriverTruckEntityRepository driverTruckEntityRepository;
-    private DriverResultSetMapper driverResultSetMapper;
+    private final DriverTruckEntityRepository driverTruckEntityRepository;
+    private final DriverResultSetMapper driverResultSetMapper;
     private static DriverEntityRepository INSTANCE;
 
     public static DriverEntityRepository getINSTANCE() {

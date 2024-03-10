@@ -34,7 +34,7 @@ public class TruckDtoMapperImpl {
     }
     public static List<TruckDto> entityToDto(List<TruckEntity> entities) {
         if (entities==null)
-            return null;
+            return new ArrayList<>();
         List<TruckDto> truckDtos = new ArrayList<>();
         for (TruckEntity entity : entities) {
             truckDtos.add(entityToDto(entity));
@@ -43,7 +43,7 @@ public class TruckDtoMapperImpl {
     }
     public static List<TruckEntity> dtoToEntity(List<TruckDto> dtos) {
         if (dtos==null)
-            return null;
+            return new ArrayList<>();
         List<TruckEntity> truckEntities = new ArrayList<>();
         for (TruckDto dto : dtos) {
             truckEntities.add(dtoToEntity(dto));

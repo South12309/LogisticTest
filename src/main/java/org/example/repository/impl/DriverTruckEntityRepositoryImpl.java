@@ -1,10 +1,8 @@
 package org.example.repository.impl;
 
-import org.example.db.ConnectionManager;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.model.TruckEntity;
-import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
 import org.example.repository.mapper.DriverResultSetMapper;
 import org.example.repository.mapper.DriverResultSetMapperImpl;
@@ -18,8 +16,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DriverTruckEntityRepositoryImpl implements DriverTruckEntityRepository {
-    private DriverResultSetMapper driverResultSetMapper;
-    private TruckResultSetMapper truckResultSetMapper;
+    private final DriverResultSetMapper driverResultSetMapper;
+    private final TruckResultSetMapper truckResultSetMapper;
     private static DriverTruckEntityRepository INSTANCE;
 
     public static DriverTruckEntityRepository getINSTANCE() {

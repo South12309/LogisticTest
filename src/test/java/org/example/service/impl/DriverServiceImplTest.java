@@ -5,16 +5,9 @@ import org.example.repository.DriverEntityRepository;
 import org.example.repository.impl.DriverEntityRepositoryImpl;
 import org.example.service.DriverService;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class DriverServiceImplTest {

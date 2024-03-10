@@ -25,7 +25,7 @@ public class DriverDtoMapperImpl {
 
     public static List<DriverDto> entityToDto(List<DriverEntity> entities) {
         if (entities==null)
-            return null;
+            return new ArrayList<>();
         List<DriverDto> driverDtos = new ArrayList<>();
         for (DriverEntity entity : entities) {
             driverDtos.add(entityToDto(entity));
@@ -47,7 +47,7 @@ public class DriverDtoMapperImpl {
 
     public static  List<DriverEntity> dtoToEntity(List<DriverDto> dtos) {
         if (dtos==null)
-            return null;
+            return new ArrayList<>();
         List<DriverEntity> driverEntities = new ArrayList<>();
         for (DriverDto dto : dtos) {
             driverEntities.add(dtoToEntity(dto));

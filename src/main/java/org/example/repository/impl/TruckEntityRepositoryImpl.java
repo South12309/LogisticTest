@@ -1,19 +1,13 @@
 package org.example.repository.impl;
 
-import org.example.db.ConnectionManager;
 import org.example.db.ConnectionManagerImpl;
 import org.example.model.DriverEntity;
 import org.example.model.ParkingEntity;
 import org.example.model.TruckEntity;
-import org.example.repository.DriverEntityRepository;
 import org.example.repository.DriverTruckEntityRepository;
-import org.example.repository.ParkingEntityRepository;
 import org.example.repository.TruckEntityRepository;
-import org.example.repository.mapper.ParkingResultSetMapper;
-import org.example.repository.mapper.ParkingResultSetMapperImpl;
 import org.example.repository.mapper.TruckResultSetMapper;
 import org.example.repository.mapper.TruckResultSetMapperImpl;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +15,8 @@ import java.util.Optional;
 
 public class TruckEntityRepositoryImpl implements TruckEntityRepository {
     private static final int DEFAULT_PARKING_ID = 1;
-    private TruckResultSetMapper truckResultSetMapper;
-    private DriverTruckEntityRepository driverTruckEntityRepository;
+    private final TruckResultSetMapper truckResultSetMapper;
+    private final DriverTruckEntityRepository driverTruckEntityRepository;
 
     private static TruckEntityRepository INSTANCE;
 

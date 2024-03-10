@@ -1,7 +1,6 @@
 package org.example.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,8 +17,9 @@ import java.util.List;
 
 @WebServlet(name = "ParkingServlet", value = "/parking")
 public class ParkingServlet extends HttpServlet {
-    private ParkingService service;
-    private ObjectMapper jsonMapper;
+
+    private final transient ParkingService service;
+    private final ObjectMapper jsonMapper;
 
     public ParkingServlet() {
         service = new ParkingServiceImpl();
@@ -32,51 +32,61 @@ public class ParkingServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
-        if (id == null) {
-            List<ParkingDto> result = ParkingDtoMapperImpl.entityToDto(service.findAll());
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write(jsonMapper.writeValueAsString(result));
-            //System.out.println(jsonMapper.writeValueAsString(result));
-        } else {
-            ParkingDto result = ParkingDtoMapperImpl.entityToDto(service.findById(Integer.parseInt(id)));
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write(jsonMapper.writeValueAsString(result));
-            //System.out.println(jsonMapper.writeValueAsString(result));
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            String id = req.getParameter("id");
+            if (id == null) {
+                List<ParkingDto> result = ParkingDtoMapperImpl.entityToDto(service.findAll());
+                resp.setStatus(HttpServletResponse.SC_OK);
+                resp.getWriter().write(jsonMapper.writeValueAsString(result));
+            } else {
+                ParkingDto result = ParkingDtoMapperImpl.entityToDto(service.findById(Integer.parseInt(id)));
+                resp.setStatus(HttpServletResponse.SC_OK);
+                resp.getWriter().write(jsonMapper.writeValueAsString(result));
+            }
+        } catch (IOException e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         saveDto(req, resp);
     }
 
     private void saveDto(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        StringBuilder requestBody = new StringBuilder();
-        BufferedReader reader = req.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            requestBody.append(line);
+        try {
+            StringBuilder requestBody = new StringBuilder();
+            BufferedReader reader = req.getReader();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                requestBody.append(line);
+            }
+            ParkingDto parkingDto = jsonMapper.readValue(requestBody.toString(), ParkingDto.class);
+            ParkingDto saveDto = ParkingDtoMapperImpl.entityToDto(service.save(ParkingDtoMapperImpl.dtoToEntity(parkingDto)));
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write(jsonMapper.writeValueAsString(saveDto));
+        } catch (IOException e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
-        ParkingDto parkingDto = jsonMapper.readValue(requestBody.toString(), ParkingDto.class);
-        ParkingDto saveDto = ParkingDtoMapperImpl.entityToDto(service.save(ParkingDtoMapperImpl.dtoToEntity(parkingDto)));
-        resp.setStatus(HttpServletResponse.SC_OK);
-        resp.getWriter().write(jsonMapper.writeValueAsString(saveDto));
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         saveDto(req, resp);
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = Integer.parseInt(req.getParameter("id"));
-        if (!service.delete(id)) {
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        } else {
-            resp.setStatus(HttpServletResponse.SC_OK);
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            Integer id = Integer.parseInt(req.getParameter("id"));
+            if (!service.delete(id)) {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                resp.setStatus(HttpServletResponse.SC_OK);
+            }
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

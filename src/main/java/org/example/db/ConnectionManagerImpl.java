@@ -2,27 +2,19 @@ package org.example.db;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.example.repository.impl.DriverEntityRepositoryImpl;
-
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 
 public class ConnectionManagerImpl implements ConnectionManager {
     private static ConnectionManagerImpl INSTANCE;
-    private HikariDataSource hikariCP;
+    private final HikariDataSource hikariCP;
 
     static {
         loadDriver();
     }
 
-    {
-        hikariCP = new HikariDataSource(preparedConfig());
-    }
-
     private ConnectionManagerImpl() {
+        hikariCP = new HikariDataSource(preparedConfig());
     }
 
     private static void loadDriver() {
