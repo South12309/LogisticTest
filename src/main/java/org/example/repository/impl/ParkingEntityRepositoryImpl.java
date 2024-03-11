@@ -33,6 +33,9 @@ public class ParkingEntityRepositoryImpl implements ParkingEntityRepository {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM logistic.parkings where id=?", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                return Optional.ofNullable(null);
+            }
             ParkingEntity parkingEntity = resultSetMapper.mapOneResult(resultSet);
             parkingEntity.setTrucks(truckEntityRepository.findByParkingId(parkingEntity.getId()));
             return Optional.ofNullable(parkingEntity);

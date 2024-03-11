@@ -35,6 +35,9 @@ public class DriverEntityRepositoryImpl implements DriverEntityRepository {
             PreparedStatement preparedStatementDrivers = connection.prepareStatement("SELECT * FROM logistic.drivers where id=?");
             preparedStatementDrivers.setInt(1, id);
             ResultSet resultSetDrivers = preparedStatementDrivers.executeQuery();
+            if (!resultSetDrivers.next()) {
+                return Optional.ofNullable(null);
+            }
             DriverEntity driverEntity = driverResultSetMapper.mapOneResult(resultSetDrivers);
             driverEntity.setTrucks(driverTruckEntityRepository.findTrucksByDriverId(id));
 
